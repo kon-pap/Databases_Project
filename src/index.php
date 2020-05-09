@@ -1,22 +1,4 @@
-<?php
-/*$conn = mysqli_connect('192.168.99.100', 'root', 'root', 'SuperMarketDB');
-
-    if (!$conn){
-        echo 'Bad connection:' . mysqli_connect_error();
-    }
-
-    $sql = 'SELECT * FROM Product';
-
-    $result = mysqli_query($conn, $sql);
-
-    $prods = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    <?php foreach($prods as $prod){ ?>
-        <h6><?php echo $prod['productID'].' '.$prod['name'].' '.$prod['brand'].' '.$prod['catID']; ?></h6>
-    <?php } ?> color:#fefefe*/
-
-?>
-
-<?php include 'header.php'; ?>
+<?php include 'templates/header.php'; ?>
 <div class="d-flex justify-content-center py-4">
 
     <a class="card m-4 text-center btn" style="width: 350px; background-color:#c8cfd2; padding-top: 80px; padding-bottom: 80px;" href="purchases.php">
