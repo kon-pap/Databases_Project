@@ -30,7 +30,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="card my-2 border-0">
                     <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="background-color:#c8cfd2;">
                         <h5 class="mb-0" style="color:#354856;">
@@ -51,7 +50,14 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
-                            Bar with two sides based on purchases highest and lowest amount
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" class="form-control" name="minamount" placeholder="Min. Amount" value="<?php if (isset($_GET['minamount'])) echo $_GET['minamount']; ?>">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="maxamount" placeholder="Max. Amount" value="<?php if (isset($_GET['maxamount'])) echo $_GET['maxamount']; ?>">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,7 +69,14 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                         <div class="card-body">
-                            Bar with two sides based on purchases highest and lowest amount
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" class="form-control" value="<?php if (isset($_GET['mincost'])) echo $_GET['mincost']; ?>" name="mincost" placeholder="Min. Cost">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" value="<?php if (isset($_GET['maxcost'])) echo $_GET['maxcost']; ?>" name="maxcost" placeholder="Max. Cost">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -74,14 +87,23 @@
                         </h5>
                     </div>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                        <div class="card-body d-flex justify-content-between mx-2">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="customRadioInline1" name="paymentradio" class="custom-control-input" value="0" <?php if (isset($_GET['paymentradio']) && $_GET['paymentradio'] === '0') echo "checked='checked'"; ?>>
-                                <label class="custom-control-label" for="customRadioInline1">Cash</label>
+                        <div class="card-body ml-2">
+                            <div class="row container-fluid">
+                                <div class="custom-control custom-radio custom-control-inline col">
+                                    <input type="radio" id="customRadioInline1" name="paymentradio" class="custom-control-input" value="0" <?php if (isset($_GET['paymentradio']) && $_GET['paymentradio'] === '0') echo "checked='checked'"; ?>>
+                                    <label class="custom-control-label" for="customRadioInline1">Cash</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline col">
+                                    <input type="radio" id="customRadioInline2" name="paymentradio" class="custom-control-input" value="1" <?php if (isset($_GET['paymentradio']) && $_GET['paymentradio'] === '1') echo "checked='checked'"; ?>>
+                                    <label class="custom-control-label" for="customRadioInline2">Credit Card</label>
+                                </div>
                             </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="customRadioInline2" name="paymentradio" class="custom-control-input" value="1" <?php if (isset($_GET['paymentradio']) && $_GET['paymentradio'] === '1') echo "checked='checked'"; ?>>
-                                <label class="custom-control-label" for="customRadioInline2">Credit Card</label>
+                            <div class="w-100 my-1"></div>
+                            <div class="row container-fluid">
+                                <div class="custom-control custom-radio custom-control-inline col">
+                                    <input type="radio" id="customRadioInline3" name="paymentradio" class="custom-control-input" value="2" <?php if (isset($_GET['paymentradio']) && $_GET['paymentradio'] === '2') echo "checked='checked'"; ?>>
+                                    <label class="custom-control-label" for="customRadioInline3">Both</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,7 +125,7 @@
                 <button type="submit" name="submit" value="submit" class="btn btn-block" style="float: right; color:#e3e6e8; background-color:#354856;">Submit</button>
             </div>
         </form>
-        <div class="col-9">
+        <div class="col-9" id="purtable">
             <table class="table">
                 <thead>
                     <tr>
