@@ -25,7 +25,7 @@
             <a class="navbar-brand" href="index.php">
                 <img src="img/logo.png" width="32" height="32" alt="">
             </a>
-            <?php if ($_SERVER['REQUEST_URI'] != "/index.php") { ?>
+            
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-3">
@@ -37,14 +37,15 @@
                         <li class="nav-item mx-3">
                             <a class="nav-link" style="color:#b6c2c9;" href="preferences.php">Preferences</a>
                         </li>
-                        <li class="nav-item mx-3">
+                        <!--<li class="nav-item mx-3">
                             <a class="nav-link" style="color:#b6c2c9;" href="stores.php">Stores</a>
                         </li>
+                        -->
                         <li class="nav-item mx-3">
                             <a class="nav-link" style="color:#b6c2c9;" href="products.php">Products</a>
                         </li>
                     </ul>
                 </div>
-            <?php } ?>
+          
         </nav>
     </header>
