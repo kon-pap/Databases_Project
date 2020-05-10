@@ -2,3 +2,63 @@ table tr:nth-child(even), thead{
     background-color: #354856;
     color:#e3e6e8;
 }
+
+.btn:focus {
+    box-shadow: 0 0 0 3px rgb(247, 172, 21, 0.3);
+    border-color: #f7ac15;
+    box-shadow: #f7ac15;
+}
+
+.custom-control-label::before {
+    width: 1.25rem;
+    height: 1.25rem;
+    left: -1.75rem;
+
+}
+
+.custom-control-label::after {
+    width: 1.25rem;
+    height: 1.25rem;
+    left: -1.75rem;
+
+}
+
+.custom-control-input:checked ~.custom-control-label::before{
+    border-color: #f7ac15;
+    background-color: #f7ac15;
+    box-shadow: none;
+}
+
+.custom-control-input:focus ~.custom-control-label::before{
+    box-shadow: none;
+    border-color: #f7ac15 !important;
+} 
+
+.custom-control-input:active ~.custom-control-label::before{
+    background-color: #f7ac15 !important;
+    opacity: 0.5 !important;
+} 
+
+.custom-control-input:hover ~.custom-control-label::before{
+    border-color: #f7ac15 !important;
+    opacity: 0.8;
+} 
+
+#scrolli::-webkit-scrollbar-track
+{
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    background-color: #e3e6e8;
+}
+
+#scrolli::-webkit-scrollbar
+{
+    width: 10px;
+    background-color: #e3e6e8;
+}
+
+#scrolli::-webkit-scrollbar-thumb
+{
+    border-radius: 5px;
+    background-color: #354856;
+}
