@@ -126,6 +126,12 @@
             </div>
         </form>
         <div class="col-9" id="purtable">
+            <style>
+                tr[data-href] {
+                    cursor: pointer;
+                }
+            </style>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -137,17 +143,29 @@
                 </thead>
                 <tbody>
                     <?php foreach ($purs as $pur) { ?>
-                        <tr>
+                        <tr data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
                             <th scope="row"><?php echo $pur['purid'] ?></th>
                             <td><?php echo $pur['total'] ?> €</td>
                             <td><?php echo $pur['payment_method'] ?></td>
                             <td><?php echo $pur['date'] ?></td>
                         </tr>
                     <?php } ?>
+                </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const rows = document.querySelectorAll("tr[data-href]");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                window.location.href = row.dataset.href;
+            })
+        });
+    });
+</script>
 
 </body>
 
