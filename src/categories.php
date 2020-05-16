@@ -1,6 +1,6 @@
 <?php session_start();?>
-<?php include 'templates/header.php'; ?>
 
+<?php include 'templates/header.php'; ?>
 <?php include 'products_sql.php';?>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -13,12 +13,11 @@
     });
 </script>
  <div class="col - 9">
-            <table  class="table" style = "width:1000px; margin-left:auto; margin-right:auto;">
+            <table  class="table table-hover" style = "width:1000px; margin-left:auto; margin-right:auto;">
                 <thead>
                     <tr>
                         <th scope="col">Category</th>
-                        
-                        
+                                                
                     </tr>
                 </thead>
                 <tbody>

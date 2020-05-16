@@ -20,7 +20,7 @@ if(isset($_GET['productid'])){
     $history = mysqli_fetch_all($hist1, MYSQLI_ASSOC);
 
 }
-    echo $names['name'];
+    echo $names['name'].'('.$names['brand'].')';
 ?> 
 </font>
 </div>

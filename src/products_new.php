@@ -1,6 +1,5 @@
 
 <?php include 'templates/header.php'; ?>
-
 <?php include 'products_sql.php';?>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -35,7 +34,7 @@ if(isset($_GET['categoryid'])){
     </font>
 </div>
     <div class="col - 9">
-            <table  class="table" style = "width:1000px; margin-left:auto; margin-right:auto;">
+            <table  class="table table-hover" style = "width:1000px; margin-left:auto; margin-right:auto;">
                 <thead>
                     <tr>
                         <th scope="col">Product/Brand</th>
@@ -55,4 +54,4 @@ if(isset($_GET['categoryid'])){
                     
             </table>
         </div>
-
+        
