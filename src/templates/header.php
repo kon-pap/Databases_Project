@@ -28,15 +28,20 @@
                             <a class="nav-link" style="color:#b6c2c9;" href="customers.php">Customers</a>
                         </li>
                         <li class="nav-item mx-3">
+                            <a class="nav-link" style="color:#b6c2c9;" href="categories.php">Categories</a>
+                        </li>
+                        <li class="nav-item mx-3">
                             <a class="nav-link" style="color:#b6c2c9;" href="preferences.php">Preferences</a>
                         </li>
                         <!--<li class="nav-item mx-3">
                             <a class="nav-link" style="color:#b6c2c9;" href="stores.php">Stores</a>
                         </li>
                         -->
-                        <li class="nav-item mx-3">
+                        <!--<li class="nav-item mx-3">
                             <a class="nav-link" style="color:#b6c2c9;" href="products.php">Products</a>
                         </li>
+                        -->
+         
                     </ul>
                 </div>
           

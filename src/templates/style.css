@@ -1,4 +1,4 @@
-#purtable table tr:nth-child(even), #purtable thead{
+ table tr:nth-child(even),  thead{
     background-color: #354856;
     color:#e3e6e8;
 }
