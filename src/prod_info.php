@@ -1,5 +1,7 @@
+
 <?php include 'templates/header.php'; ?>
 <?php include 'products_sql.php';?>
+
 
 <div style = "text-align :center"><font size = "350px">
 <?php
@@ -21,9 +23,11 @@ if(isset($_GET['productid'])){
 
 }
     echo $names['name'].'('.$names['brand'].')';
+    
 ?> 
 </font>
 </div>
+
 <div class="col - 9">
             <table  class="table" style = "width:1000px; margin-left:auto; margin-right:auto;">
                 <thead>
@@ -35,6 +39,7 @@ if(isset($_GET['productid'])){
                     </tr>
                 </thead>
                 <tbody>
+             
                     <?php foreach ($history as $hist) { ?>
                         <tr>
                             <th scope="row"><?php echo $hist['date']?></th>
@@ -48,9 +53,11 @@ if(isset($_GET['productid'])){
 
                         </tr>
                     <?php } ?>
+                    
                 </tbody>
                     
             </table>
+
         </div>
 
 
