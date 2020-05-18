@@ -15,6 +15,9 @@ $result1 = mysqli_query($conn, $sql1);
 
 $stores = mysqli_fetch_all($result1, MYSQLI_ASSOC);
 
+$catsql = 'SELECT * FROM category ORDER BY name ASC';
+$res = mysqli_query($conn, $catsql);
+$cats = mysqli_fetch_all($res, MYSQLI_ASSOC);
 /* Initializations */
 $stores_sel = '';
 $startdate = '2018-01-01';
@@ -22,21 +25,43 @@ $enddate = '2018-05-31';
 
 if (isset($_GET['submit'])) {
     $first = false;
+    $catfix = false;
+    foreach ($cats as $cat) {
+        if ($_GET['catch' . '' . $cat['catid']]) {
+            if ($catfix == false) {
+                $catfix = true;
+                $first = true;
+                $cats_chosen = '(';
+            }
+            $cats_chosen = $cats_chosen . $cat['catid'] . ', ';
+        }
+    }
+
+    if ($catfix == true) {
+        $cats_chosen = substr($cats_chosen, 0, -2);
+        $cats_chosen = $cats_chosen . ')';
+        $sql = 'SELECT *, product.name as prname FROM purchase, purch_prod, product, category WHERE purchase.purid = purch_prod.purid AND purch_prod.productid = product.productid AND product.catid = category.catid AND product.catid IN ' . $cats_chosen . ' ';
+    }
 
     /*Creating part of the query that chooses stores */
+    $storefix = false;
     foreach ($stores as $stor) {
         if ($_GET['storch' . '' . $stor['storeid']]) {
-            if ($first == false) {
+            if ($storefix == false) {
                 $first = true;
+                $storefix = true;
                 $stores_sel = '(';
             }
             $stores_sel = $stores_sel . $stor['storeid'] . ', ';
         };
     }
-    if ($first == true) {
-        $stores_sel = substr($stores_sel, 0, -2);
-        $stores_sel = $stores_sel . ')';
+
+    $stores_sel = substr($stores_sel, 0, -2);
+    $stores_sel = $stores_sel . ')';
+    if ($first == true && $catfix == false) {
         $sql = 'SELECT * FROM purchase WHERE ' . 'storeid IN' . ' ' . $stores_sel . '';
+    } elseif ($storefix == true && $catfix == true) {
+        $sql = $sql . " AND purchase.storeid IN" . $stores_sel;
     }
 
     /*Creating part of the query that chooses payment method */
@@ -45,7 +70,7 @@ if (isset($_GET['submit'])) {
             $first = true;
             $sql = 'SELECT * FROM purchase WHERE ' . "payment_method = 'cash'";
         } else {
-            $sql = $sql . " AND payment_method = 'cash'";
+            $sql = $sql . " AND purchase.payment_method = 'cash'";
         }
     } elseif ($_GET['paymentradio'] === '1') {
         if ($first == false) {
@@ -64,7 +89,7 @@ if (isset($_GET['submit'])) {
             $first = true;
             $sql = 'SELECT * FROM purchase WHERE ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         } else {
-            $sql = $sql . "AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
+            $sql = $sql . " AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         }
     } elseif ($_GET["minamount"] !== '') {
         $minamount = (float) $_GET["minamount"];
@@ -72,9 +97,9 @@ if (isset($_GET['submit'])) {
         $maxamount = (float) $maxamount['max_amount'];
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount ;
+            $sql = 'SELECT * FROM purchase WHERE ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         } else {
-            $sql = $sql . "AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
+            $sql = $sql . " AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         }
     } elseif ($_GET["maxamount"] !== '') {
         $maxamount = (float) $_GET["maxamount"];
@@ -84,7 +109,7 @@ if (isset($_GET['submit'])) {
             $first = true;
             $sql = 'SELECT * FROM purchase WHERE ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         } else {
-            $sql = $sql . "AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
+            $sql = $sql . " AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         }
     }
 
@@ -96,7 +121,7 @@ if (isset($_GET['submit'])) {
             $first = true;
             $sql = 'SELECT * FROM purchase WHERE ' . "total between " . $mincost . " and " . $maxcost;
         } else {
-            $sql = $sql . " AND total between " . $mincost . " and " . $maxcost;
+            $sql = $sql . " AND purchase.total between " . $mincost . " and " . $maxcost;
         }
     } elseif ($_GET["mincost"] !== '') {
         $maxcost = mysqli_fetch_array(mysqli_query($conn, 'SELECT MAX(total) FROM purchase'));
@@ -106,7 +131,7 @@ if (isset($_GET['submit'])) {
             $first = true;
             $sql = 'SELECT * FROM purchase WHERE ' . "total between " . $mincost . " and " . $maxcost;
         } else {
-            $sql = $sql . " AND total between " . $mincost . " and " . $maxcost;
+            $sql = $sql . " AND purchase.total between " . $mincost . " and " . $maxcost;
         }
     } elseif ($_GET["maxcost"] !== '') {
         $mincost = mysqli_fetch_array(mysqli_query($conn, 'SELECT MIN(total) FROM purchase'));
@@ -116,7 +141,7 @@ if (isset($_GET['submit'])) {
             $first = true;
             $sql = 'SELECT * FROM purchase WHERE ' . "total between " . $mincost . " and " . $maxcost;
         } else {
-            $sql = $sql . " AND total between " . $mincost . " and " . $maxcost;
+            $sql = $sql . " AND purchase.total between " . $mincost . " and " . $maxcost;
         }
     }
 
@@ -135,6 +160,7 @@ if (isset($_GET['submit'])) {
         }
     }
 
+    $sql = $sql . ' ORDER BY purchase.purid ASC';
     $result = mysqli_query($conn, $sql);
 
     $purs = mysqli_fetch_all($result, MYSQLI_ASSOC);

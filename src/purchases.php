@@ -2,7 +2,7 @@
 <?php include 'templates/header.php'; ?>
 <div class="container-fluid">
     <div class="row my-3 mx-2" style="color:#354856;">
-        <div class="h2">Purchase History</div>
+        <div class="h2">Purchases</div>
     </div>
     <div class="row">
         <form class="col-3 justify-content-start" action="/purchases.php" method="GET">
@@ -115,14 +115,27 @@
                         </h5>
                     </div>
                     <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
-                        <div class="card-body">
-                            Checkboxes for Categories
+                        <div class="card-body p-0 overflow-auto" id="scrolli">
+                            <ul class="list-group px-0" style="max-height: 300px;">
+                                <?php foreach ($cats as $cat) { ?>
+                                    <li class="list-group-item rounded-0" style="border-bottom:1px dashed #354856;">
+                                        <div class="custom-control custom-checkbox" style="padding-left: 1.75rem">
+                                            <input class="custom-control-input mr-2" type="checkbox" value="1" <?php if (isset($_GET['catch' . '' . $cat['catid']])) echo "checked='checked'"; ?> id="catch<?php echo $cat['catid'] ?>" name="catch<?php echo $cat['catid'] ?>">
+                                            <label class="custom-control-label" for="catch<?php echo $cat['catid'] ?>">
+                                                <?php echo $cat['name']  ?>
+                                            </label>
+                                        </div>
+                                    </li>
+                                <?php } ?>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container-fluid">
                 <button type="submit" name="submit" value="submit" class="btn btn-block" style="float: right; color:#e3e6e8; background-color:#354856;">Submit</button>
+                <a type="button" href="edit_purchase.php" class="btn btn-block my-3" style="float: right; color:#e3e6e8; background-color:#354856;">New Purchase</a>
+
             </div>
         </form>
         <div class="col-9" id="purtable">
@@ -131,27 +144,52 @@
                     cursor: pointer;
                 }
             </style>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">purID</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Payment Method</th>
-                        <th scope="col">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($purs as $pur) { ?>
-                        <tr data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
-                            <th scope="row"><?php echo $pur['purid'] ?></th>
-                            <td><?php echo $pur['total'] ?> €</td>
-                            <td><?php echo $pur['payment_method'] ?></td>
-                            <td><?php echo $pur['date'] ?></td>
+            <?php if ($catfix == false) { ?>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">purID</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Payment Method</th>
+                            <th scope="col">Date</th>
                         </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($purs as $pur) { ?>
+                            <tr data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
+                                <th scope="row"><?php echo $pur['purid'] ?></th>
+                                <td><?php echo $pur['total'] ?> €</td>
+                                <td><?php echo $pur['payment_method'] ?></td>
+                                <td><?php echo $pur['date'] ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            <?php } else { ?>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">purID</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Cost</th>
+                            <th scope="col">Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($purs as $pur) { ?>
+                            <tr data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
+                                <th scope="row"><?php echo $pur['purid'] ?></th>
+                                <td><?php echo $pur['prname'] ?></td>
+                                <td><?php echo $pur['amount'] ?></td>
+                                <td><?php echo $pur['cost'] ?> €</td>
+                                <td><?php echo $pur['name'] ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            <?php } ?>
+
         </div>
     </div>
 </div>
