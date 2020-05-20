@@ -5,7 +5,7 @@
         <div class="h2">Purchases</div>
     </div>
     <div class="row">
-        <form class="col-3 justify-content-start" action="/purchases.php" method="GET">
+        <form class="col-3 justify-content-start" action="/purchases.php" method="GET" id="purform">
             <div id="accordion" style="background-color:#e3e6e8;">
                 <div class="card my-2 border-0">
                     <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="background-color:#c8cfd2;">
@@ -134,8 +134,7 @@
             </div>
             <div class="container-fluid">
                 <button type="submit" name="submit" value="submit" class="btn btn-block" style="float: right; color:#e3e6e8; background-color:#354856;">Submit</button>
-                <a type="button" href="edit_purchase.php" class="btn btn-block my-3" style="float: right; color:#e3e6e8; background-color:#354856;">New Purchase</a>
-
+                <a type="button" href="edit_purchase.php?storeid=11&seeprod=1" class="btn btn-block my-3" style="float: right; color:#e3e6e8; background-color:#eba325;">New Purchase</a>
             </div>
         </form>
         <div class="col-9" id="purtable">
@@ -143,68 +142,138 @@
                 tr[data-href] {
                     cursor: pointer;
                 }
+
+                /* Style the tab */
+                .tab {
+                    overflow: hidden;
+                    /*border: 1px solid #ccc;
+                    background-color: #f1f1f1;*/
+                }
+
+                /* Style the buttons that are used to open the tab content */
+                .tab button {
+                    background-color: inherit;
+                    float: left;
+                    border: none;
+                    outline: none;
+                    cursor: pointer;
+                    padding: 8px 16px 8px 16px;
+                    margin-left: 0.5rem;
+                    margin-right: 0.5rem;
+                    transition: 0.5s;
+                }
+
+                /* Change background color of buttons on hover */
+                .tab button:hover {
+                    background-color: #ddd;
+                }
+
+                /* Create an active/current tablink class */
+                .tab button.active {
+                    background-color: #f7ac15;
+                    color: #354856;
+                }
+
+                /* Style the tab content */
+                .tabcontent {
+                    display: block;
+                    padding: 6px 12px;
+                    /*border: 1px solid #ccc;*/
+                    border-top: none;
+                }
             </style>
-            <?php if ($catfix == false) { ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">purID</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Payment Method</th>
-                            <th scope="col">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($purs as $pur) { ?>
-                            <tr data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
-                                <th scope="row"><?php echo $pur['purid'] ?></th>
-                                <td><?php echo $pur['total'] ?> €</td>
-                                <td><?php echo $pur['payment_method'] ?></td>
-                                <td><?php echo $pur['date'] ?></td>
+            <div class="tab d-flex justify-content-end">
+                <button class="tablinks active" onclick="opentab(event, 'gen')">General</button>
+                <button class="tablinks" onclick="opentab(event, 'det')">Detail</button>
+            </div>
+            <div class="tabcontent" id="gen">
+                <?php if ($catfix == false) { ?>
+                    <table class="table">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th scope="col">Total</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Payment Method</th>
+                                <th scope="col">Customer Name</th>
                             </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            <?php } else { ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">purID</th>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Cost</th>
-                            <th scope="col">Category</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($purs as $pur) { ?>
-                            <tr data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
-                                <th scope="row"><?php echo $pur['purid'] ?></th>
-                                <td><?php echo $pur['prname'] ?></td>
-                                <td><?php echo $pur['amount'] ?></td>
-                                <td><?php echo $pur['cost'] ?> €</td>
-                                <td><?php echo $pur['name'] ?></td>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($purs as $pur) { ?>
+                                <tr style="text-align: center;" data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
+                                    <td><?php echo $pur['total'] ?> €</td>
+                                    <td><?php echo $pur['date'] ?></td>
+                                    <td><?php echo $pur['payment_method'] ?></td>
+                                    <td><?php echo $pur['first_name'] . ' ' . $pur['last_name'] ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                <?php } else { ?>
+                    <table class="table">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Cost</th>
+                                <th scope="col">Category</th>
                             </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            <?php } ?>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($purs as $pur) { ?>
+                                <tr style="text-align: center;" data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
+                                    <th scope="row"><?php echo $pur['prname'] ?></th>
+                                    <td><?php echo $pur['amount'] ?></td>
+                                    <td><?php echo $pur['cost'] * $pur['amount'] ?> €</td>
+                                    <td><?php echo $pur['name'] ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                <?php } ?>
+            </div>
+
+            <div class="tabcontent" style="display: none;" id="det">
+                <?php if ($catfix == false) { ?>
+                    
+                <?php } ?>
+            </div>
 
         </div>
-    </div>
-</div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const rows = document.querySelectorAll("tr[data-href]");
-        rows.forEach(row => {
-            row.addEventListener("click", () => {
-                window.location.href = row.dataset.href;
-            })
-        });
-    });
-</script>
+        <script>
+            function opentab(evt, tab) {
+                // Declare all variables
+                var i, tabcontent, tablinks;
 
-</body>
+                // Get all elements with class="tabcontent" and hide them
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
 
-</html>
+                // Get all elements with class="tablinks" and remove the class "active"
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+
+                // Show the current tab, and add an "active" class to the button that opened the tab
+                document.getElementById(tab).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const rows = document.querySelectorAll("tr[data-href]");
+                rows.forEach(row => {
+                    row.addEventListener("click", () => {
+                        window.location.href = row.dataset.href;
+                    })
+                });
+            });
+        </script>
+
+        </body>
+
+        </html>

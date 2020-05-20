@@ -9,7 +9,7 @@ if (!$conn) {
 $sql1 = 'SELECT * FROM store ORDER BY city ASC';
 
 /* Show purchases when visiting for first time or not picked restrictions */
-$sql = 'SELECT * FROM purchase WHERE purid <= 50';
+$sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND purid <= 50';
 
 $result1 = mysqli_query($conn, $sql1);
 
@@ -59,7 +59,7 @@ if (isset($_GET['submit'])) {
     $stores_sel = substr($stores_sel, 0, -2);
     $stores_sel = $stores_sel . ')';
     if ($first == true && $catfix == false) {
-        $sql = 'SELECT * FROM purchase WHERE ' . 'storeid IN' . ' ' . $stores_sel . '';
+        $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . 'storeid IN' . ' ' . $stores_sel . '';
     } elseif ($storefix == true && $catfix == true) {
         $sql = $sql . " AND purchase.storeid IN" . $stores_sel;
     }
@@ -68,14 +68,14 @@ if (isset($_GET['submit'])) {
     if ($_GET['paymentradio'] === '0') {
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "payment_method = 'cash'";
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "payment_method = 'cash'";
         } else {
             $sql = $sql . " AND purchase.payment_method = 'cash'";
         }
     } elseif ($_GET['paymentradio'] === '1') {
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "payment_method = 'credit card'";
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "payment_method = 'credit card'";
         } else {
             $sql = $sql . " AND payment_method = 'credit card'";
         }
@@ -87,7 +87,7 @@ if (isset($_GET['submit'])) {
         $maxamount = (float) $_GET["maxamount"];
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         } else {
             $sql = $sql . " AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         }
@@ -97,7 +97,7 @@ if (isset($_GET['submit'])) {
         $maxamount = (float) $maxamount['max_amount'];
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         } else {
             $sql = $sql . " AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         }
@@ -107,7 +107,7 @@ if (isset($_GET['submit'])) {
         $minamount = (float) $minamount['min_amount'];
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "(SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         } else {
             $sql = $sql . " AND (SELECT SUM(amount) FROM purch_prod WHERE purchase.purid = purch_prod.purid) between " . $minamount . " and " . $maxamount;
         }
@@ -119,7 +119,7 @@ if (isset($_GET['submit'])) {
         $maxcost = (float) $_GET["maxcost"];
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "total between " . $mincost . " and " . $maxcost;
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "total between " . $mincost . " and " . $maxcost;
         } else {
             $sql = $sql . " AND purchase.total between " . $mincost . " and " . $maxcost;
         }
@@ -129,7 +129,7 @@ if (isset($_GET['submit'])) {
         $mincost = (float) $_GET["mincost"];
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "total between " . $mincost . " and " . $maxcost;
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "total between " . $mincost . " and " . $maxcost;
         } else {
             $sql = $sql . " AND purchase.total between " . $mincost . " and " . $maxcost;
         }
@@ -139,7 +139,7 @@ if (isset($_GET['submit'])) {
         $maxcost = (float) $_GET["maxcost"];
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "total between " . $mincost . " and " . $maxcost;
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "total between " . $mincost . " and " . $maxcost;
         } else {
             $sql = $sql . " AND purchase.total between " . $mincost . " and " . $maxcost;
         }
@@ -154,7 +154,7 @@ if (isset($_GET['submit'])) {
     if (isset($_GET['dateswitch'])) {
         if ($first == false) {
             $first = true;
-            $sql = 'SELECT * FROM purchase WHERE ' . "purchase.date between '" . $startdate . "' and '" . $enddate . "'";
+            $sql = 'SELECT * FROM customer, purchase WHERE purchase.cardid = customer.cardid AND ' . "purchase.date between '" . $startdate . "' and '" . $enddate . "'";
         } else {
             $sql = $sql . " AND purchase.date between '" . $startdate . "' and '" . $enddate . "'";
         }

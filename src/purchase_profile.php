@@ -22,7 +22,7 @@ $result2 = mysqli_query($conn, $sql2);
 $rcpt_info = mysqli_fetch_array($result2, MYSQLI_ASSOC);
 
 /*Customer Info */
-$sql3 = 'SELECT first_name, last_name FROM customer WHERE cardid =' . $rcpt_info['cardid'];
+$sql3 = 'SELECT * FROM customer WHERE cardid =' . $rcpt_info['cardid'];
 
 $result3 = mysqli_query($conn, $sql3);
 $customer = mysqli_fetch_array($result3, MYSQLI_ASSOC);
@@ -32,6 +32,20 @@ $sql4 = 'SELECT street_name, street_number, city FROM store WHERE storeid =' . $
 
 $result4 = mysqli_query($conn, $sql4);
 $stor = mysqli_fetch_array($result4, MYSQLI_ASSOC);
+
+$age = date("Y") - substr($customer['date_of_birth'], 0, 4);
+
+if ($customer['number_of_kids'] >0){
+    if ($customer['number_of_kids'] == 1){
+        $status = ucfirst($customer['relationship_status']).' with 1 kid';
+    }
+    else {
+        $status = ucfirst($customer['relationship_status']).' with ' .$customer['number_of_kids']. ' children';
+    }
+}
+else {
+    $status = ucfirst($customer['relationship_status']);
+}
 ?>
 <?php include 'templates/header.php'; ?>
 <div class="row my-3 mx-2" style="color:#354856;">
@@ -71,4 +85,13 @@ $stor = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 </div>
 <div class="d-flex mx-2 justify-content-end" style="color:#354856;">
     <div class="h5 mr-5">Payment Method: <?php echo $rcpt_info['payment_method']; ?></div>
+</div>
+<div class="row mt-5 mb-3 mx-4" style="color:#354856;">
+    <div class="h4">More Customer Info</div>
+</div>
+<div class="d-flex my-3 ml-4 mr-5 justify-content-between" style="color:#354856;">
+    <div class="h5">Card Expiration Date: <?php echo $customer['card_exp_date']; ?></div>
+    <div class="h5">Customer Address: <?php echo $customer['street_name']. ' ' . $customer['street_number']. ', ' . $customer['city']; ?></div>
+    <div class="h5">Age: <?php echo $age; ?></div>
+    <div class="h5">Status: <?php echo $status; ?></div>
 </div>
