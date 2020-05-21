@@ -38,7 +38,7 @@ if(isset($_GET['categoryid'])){
                 <thead>
                     <tr>
                         <th scope="col">Product/Brand</th>
-                        <th scope="col">Cost</th>
+                        
                         
                     </tr>
                 </thead>
@@ -46,7 +46,7 @@ if(isset($_GET['categoryid'])){
                     <?php foreach ($prods as $pro) { ?>
                         <tr data-href="<?php echo 'prod_info.php?productid=' . $pro['productid'] ?>"> 
                             <th scope="row"><?php echo $pro['name']. ' / ' . $pro['brand']?></th>
-                            <td><?php echo "--" ?></td>
+                             
                             <a href="<?php echo 'prod_info.php?productid=' . $pro['productid'] ?>"></a>
                         </tr>
                     <?php } ?>
