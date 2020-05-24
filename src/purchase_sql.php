@@ -169,3 +169,4 @@ if (isset($_GET['submit'])) {
 $result = mysqli_query($conn, $sql);
 
 $purs = mysqli_fetch_all($result, MYSQLI_ASSOC);
+?>

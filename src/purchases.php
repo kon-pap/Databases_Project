@@ -233,47 +233,46 @@
             </div>
 
             <div class="tabcontent" style="display: none;" id="det">
-                <?php if ($catfix == false) { ?>
-                    
-                <?php } ?>
+                <?php include 'purchase_charts.php'; ?>
             </div>
-
         </div>
+    </div>
+</div>
 
-        <script>
-            function opentab(evt, tab) {
-                // Declare all variables
-                var i, tabcontent, tablinks;
+<script>
+    function opentab(evt, tab) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
 
-                // Get all elements with class="tabcontent" and hide them
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
 
-                // Get all elements with class="tablinks" and remove the class "active"
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
 
-                // Show the current tab, and add an "active" class to the button that opened the tab
-                document.getElementById(tab).style.display = "block";
-                evt.currentTarget.className += " active";
-            }
-        </script>
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tab).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const rows = document.querySelectorAll("tr[data-href]");
-                rows.forEach(row => {
-                    row.addEventListener("click", () => {
-                        window.location.href = row.dataset.href;
-                    })
-                });
-            });
-        </script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const rows = document.querySelectorAll("tr[data-href]");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                window.location.href = row.dataset.href;
+            })
+        });
+    });
+</script>
 
-        </body>
+</body>
 
-        </html>
+</html>
