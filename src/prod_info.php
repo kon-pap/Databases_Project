@@ -1,11 +1,13 @@
-
+<?php session_start();?>
 <?php include 'templates/header.php'; ?>
 <?php include 'products_sql.php';?>
 <div style = "text-align :center"><font size = "350px">
 <?php
+ 
 if(isset($_GET['productid']))
 {
     $myvar = $_GET['productid']  ;
+    $_SESSION['prod'] = $myvar;
     $sqli = 'SELECT * FROM product WHERE productid = '.$myvar; 
     $Name =mysqli_query($conn, $sqli);
     $names = mysqli_fetch_array($Name, MYSQLI_ASSOC);
@@ -17,9 +19,10 @@ if(isset($_GET['productid']))
     $newq = 'SELECT * FROM offers WHERE productid =' .$myvar;
     $curpr =mysqli_query($conn, $newq);
     $price = mysqli_fetch_all($curpr, MYSQLI_ASSOC);
+    echo $names['name'].'('.$names['brand'].')';
 
 }
-echo $names['name'].'('.$names['brand'].')';
+
 ?> 
 </font>
 </div>
@@ -88,7 +91,8 @@ echo $names['name'].'('.$names['brand'].')';
                 </thead>
                 <tbody>
              
-                    <?php foreach ($history as $hist) { ?>
+                    <?php if (is_array($history) || is_object($history)){
+                        foreach ($history as $hist) { ?>
                         <tr>
                             <th scope="row"><?php echo $hist['date']?></th>
                             <td><?php echo $hist['newprice']?> € </td>
@@ -100,7 +104,7 @@ echo $names['name'].'('.$names['brand'].')';
                             echo $mymarket['street_name'].' '.$mymarket['street_number'].', '.$mymarket['city']?></td>
 
                         </tr>
-                    <?php } ?>
+                    <?php } }?>
                     
                 </tbody>
                     
@@ -119,7 +123,8 @@ echo $names['name'].'('.$names['brand'].')';
                 </thead>
                 <tbody>
              
-                    <?php foreach ($price as $pr) { ?>
+                    <?php if (is_array($price) || is_object($price)){
+                        foreach ($price as $pr) { ?>
                         <tr>
                             <th scope="row">
                             <?php echo $pr['current_price']?> € </th>
@@ -131,12 +136,15 @@ echo $names['name'].'('.$names['brand'].')';
                             echo $mymarkets['street_name'].' '.$mymarkets['street_number'].', '.$mymarkets['city']?></td>
 
                         </tr>
-                    <?php } ?>
+                    <?php } } ?>
                 </tbody>
                 </table>
             </div>
             <div class="tabcontent" style="display: none;" id="change">
+            
             <?php include 'price_changer.php';?>
+            
+            
             
             </div>
 
@@ -167,6 +175,17 @@ echo $names['name'].'('.$names['brand'].')';
         </script>
 
         </div>
+        <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const rows = document.querySelectorAll("tr[data-href]");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                window.location.href = row.dataset.href;
+            })
+        });
+    });
+</script>
+
      </body>
 </html>
 

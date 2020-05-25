@@ -27,9 +27,10 @@ if(isset($_GET['categoryid'])){
     $sqlq = 'SELECT * FROM product WHERE catid = '.$myvar; 
     $prod =mysqli_query($conn, $sqlq);
     $prods = mysqli_fetch_all($prod, MYSQLI_ASSOC);
+    echo $names['name'];
 }
 
-    echo $names['name'];
+    
     ?>
     </font>
 </div>
