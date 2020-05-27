@@ -1,4 +1,4 @@
-
+<?php session_start();?>
 <?php include 'templates/header.php'; ?>
 <?php include 'products_sql.php';?>
 <script>
@@ -24,9 +24,9 @@ if(isset($_GET['categoryid'])){
     $sqli = 'SELECT * FROM category WHERE catid = '.$myvar; 
     $Name =mysqli_query($conn, $sqli);
     $names = mysqli_fetch_array($Name, MYSQLI_ASSOC);
-    $sqlq = 'SELECT * FROM product WHERE catid = '.$myvar; 
+   /* $sqlq = 'SELECT * FROM product WHERE catid = '.$myvar; 
     $prod =mysqli_query($conn, $sqlq);
-    $prods = mysqli_fetch_all($prod, MYSQLI_ASSOC);
+    $prods = mysqli_fetch_all($prod, MYSQLI_ASSOC);*/
     echo $names['name'];
 }
 
@@ -44,7 +44,12 @@ if(isset($_GET['categoryid'])){
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($prods as $pro) { ?>
+                
+                    <?php
+                    $sqlq = 'SELECT * FROM product WHERE catid = '.$myvar; 
+                    $prod =mysqli_query($conn, $sqlq);
+                    $prods = mysqli_fetch_all($prod, MYSQLI_ASSOC);
+                     foreach ($prods as $pro) { ?>
                         <tr data-href="<?php echo 'prod_info.php?productid=' . $pro['productid'] ?>"> 
                             <th scope="row"><?php echo $pro['name']. ' / ' . $pro['brand']?></th>
                              

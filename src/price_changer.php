@@ -1,6 +1,6 @@
-
 <?php session_start();?>
 <?php include 'products_sql.php';?>
+<?php include 'templates/header.php';?>
 
 <div style = "text-align :center"><font size = "350px">
 <?php
@@ -9,29 +9,39 @@ if (isset($_GET['submit'])){
     
     $myvar = $_SESSION['prod']; #productid
     $mystore = $_GET['storeid'];
+    $_SESSION['val'] = $mystore;
+
     $val = $_GET['inp']; #input
     
-    $quer = 'SELECT * FROM pricehistory  WHERE (productid = '. $myvar.' AND storeid= '.$mystore.' AND newprice= '.$myvar.')';
-    $hist1 =mysqli_query($conn, $quer);
-    $history = mysqli_fetch_all($hist1, MYSQLI_ASSOC);
     $up = 'UPDATE offers SET current_price = ' .$val .' WHERE (productid = '. $myvar.' AND storeid= '.$mystore.')';
     #echo $myvar,'####', $mystore, '#####',$val;
     mysqli_query($conn, $up);
+    $_SESSION['timh'] = $val;
     
-    header("Location: prod_info.php");
-    
+    $sq = 'SELECT * FROM pricehistory WHERE ( storeid= '.$mystore.' AND productid = '. $myvar.')';
+    $sq1 =mysqli_query($conn, $sq);
+    $dates = mysqli_fetch_all($sq1, MYSQLI_ASSOC);
 }
  #$date = date("Y/m/d");
  
-
+ $myvar = $_SESSION['prod'];
+ $sqli = 'SELECT * FROM product WHERE productid = '.$myvar; 
+ $Name =mysqli_query($conn, $sqli);
+ $names = mysqli_fetch_array($Name, MYSQLI_ASSOC);
+ echo $names['name'].'('.$names['brand'].')';
 ?>
  
  
 </font>
 </div>
+<div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+            <a href="hist.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Price History</a>
+            <a href="current_prices.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Current Prices</a>
+            <a href="price_changer.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Price Changer</a>
 
+            </div>
    
-<form action = '' method="GET" >
+<form action = '/price_changer.php' method="GET" >
 <div class="row">
     <div class="col">
         <label for="inp">Insert New Price</label>
@@ -54,6 +64,32 @@ if (isset($_GET['submit'])){
  </div>
 </form>
 
+<!-- finds max date -->
+ <?php
+ $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');
+ if(isset($_GET['submit']))
+ {
+                    
+     foreach ($dates as $dat) { 
+         $max = 0;
+         if ($dat['date']> $max) 
+        {
+         $max = $dat['date'];
+         $kati = $dat['issales'];
+        }
+ }
+
+$hmer = date("Y-m-d");
+
+$kiouri =  "INSERT INTO pricehistory (storeid, productid, date, issales, newprice) VALUES (". $mystore . ','. $myvar. ',"' . $hmer . '",' . $kati . ','. $val.')';
+if(mysqli_query($conn, $kiouri)){
+    echo "Price changed successfully";
+}
+else{
+    echo "Something is wrong";
+}
+ }
+?>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
