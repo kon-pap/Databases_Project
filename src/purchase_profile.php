@@ -15,17 +15,11 @@ $result = mysqli_query($conn, $sql);
 
 $rcpt_items = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-/* Purchase info */
-$sql2 = 'SELECT * FROM purchase WHERE purid =' . $purid;
+/* Purchase & Customer info */
+$sql2 = 'SELECT * FROM pur_cust WHERE purid =' . $purid;
 
 $result2 = mysqli_query($conn, $sql2);
 $rcpt_info = mysqli_fetch_array($result2, MYSQLI_ASSOC);
-
-/*Customer Info */
-$sql3 = 'SELECT * FROM customer WHERE cardid =' . $rcpt_info['cardid'];
-
-$result3 = mysqli_query($conn, $sql3);
-$customer = mysqli_fetch_array($result3, MYSQLI_ASSOC);
 
 /*Store Info */
 $sql4 = 'SELECT street_name, street_number, city FROM store WHERE storeid =' . $rcpt_info['storeid'];
@@ -33,18 +27,18 @@ $sql4 = 'SELECT street_name, street_number, city FROM store WHERE storeid =' . $
 $result4 = mysqli_query($conn, $sql4);
 $stor = mysqli_fetch_array($result4, MYSQLI_ASSOC);
 
-$age = date("Y") - substr($customer['date_of_birth'], 0, 4);
+$age = $rcpt_info['age'];
 
-if ($customer['number_of_kids'] >0){
-    if ($customer['number_of_kids'] == 1){
-        $status = ucfirst($customer['relationship_status']).' with 1 kid';
+if ($rcpt_info['number_of_kids'] >0){
+    if ($rcpt_info['number_of_kids'] == 1){
+        $status = ucfirst($rcpt_info['relationship_status']).' with 1 kid';
     }
     else {
-        $status = ucfirst($customer['relationship_status']).' with ' .$customer['number_of_kids']. ' children';
+        $status = ucfirst($rcpt_info['relationship_status']).' with ' .$rcpt_info['number_of_kids']. ' children';
     }
 }
 else {
-    $status = ucfirst($customer['relationship_status']);
+    $status = ucfirst($rcpt_info['relationship_status']);
 }
 ?>
 <?php include 'templates/header.php'; ?>
@@ -55,7 +49,7 @@ else {
     <div class="h5">Date: <?php echo $rcpt_info['date']; ?></div>
     <div class="h5">Time: <?php echo $rcpt_info['time']; ?></div>
     <div class="h5">Store: <?php echo $stor['street_name'] . ' ' . $stor['street_number'] . ', ' . $stor['city'] ?></div>
-    <div class="h5">Customer: <?php echo $customer['first_name'].' '.$customer['last_name']; ?></div>
+    <div class="h5">Customer: <?php echo $rcpt_info['first_name'].' '.$rcpt_info['last_name']; ?></div>
 </div>
 
 <div class="m-3" id="purtable">
@@ -90,8 +84,8 @@ else {
     <div class="h4">More Customer Info</div>
 </div>
 <div class="d-flex my-3 ml-4 mr-5 justify-content-between" style="color:#354856;">
-    <div class="h5">Card Expiration Date: <?php echo $customer['card_exp_date']; ?></div>
-    <div class="h5">Customer Address: <?php echo $customer['street_name']. ' ' . $customer['street_number']. ', ' . $customer['city']; ?></div>
+    <div class="h5">Card Expiration Date: <?php echo $rcpt_info['card_exp_date']; ?></div>
+    <div class="h5">Customer Address: <?php echo $rcpt_info['street_name']. ' ' . $rcpt_info['street_number']. ', ' . $rcpt_info['city']; ?></div>
     <div class="h5">Age: <?php echo $age; ?></div>
     <div class="h5">Status: <?php echo $status; ?></div>
 </div>

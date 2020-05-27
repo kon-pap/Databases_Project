@@ -1,7 +1,7 @@
 <?php include 'preferences_sql.php'; ?>
 <?php include 'templates/header.php'; ?>
 <div class="row my-3 mx-4" style="color:#354856;">
-    <div class="h2">Conclusions</div>
+    <div class="h2">Preferences</div>
 </div>
 <div class="row my-3 mx-2">
     <form class="col-3 justify-content-start" action="/preferences.php" method="GET" id="purform">
@@ -39,6 +39,8 @@
             <li data-target="#carouselExampleIndicators" data-slide-to="2" style="height: 3px;"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="3" style="height: 3px;"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="4" style="height: 3px;"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="5" style="height: 3px;"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="6" style="height: 3px;"></li>
         </ol>
         <div class="carousel-inner d-flex justify-content-center">
             <div class="carousel-item active" style="width: 80%; background-color: #e3e6e8;">
@@ -169,7 +171,7 @@
                                 }
                             },
                             tooltips: {
-                                enabled: false
+                                enabled: true
                             }
                         }
                     });
@@ -185,41 +187,42 @@
                         data: {
                             labels: [<?php echo $labelall; ?>],
                             datasets: [{
-                                label: "Age: 15-24",
-                                data: [<?php echo $g1; ?>],
-                                backgroundColor: "#1EB980",
-                                borderWidth: 1,
-                                borderColor: '#e3e6e8',
-                                hoverBorderWidth: 3,
-                                hoverBorderColor: '#e3e6e8'
-                            },
-                            {
-                                label: "Age: 25-40",
-                                data: [<?php echo $g2; ?>],
-                                backgroundColor: "#045D56",
-                                borderWidth: 1,
-                                borderColor: '#e3e6e8',
-                                hoverBorderWidth: 3,
-                                hoverBorderColor: '#e3e6e8'
-                            },
-                            {
-                                label: "Age: 41-64",
-                                data: [<?php echo $g3; ?>],
-                                backgroundColor: "#FF6859",
-                                borderWidth: 1,
-                                borderColor: '#e3e6e8',
-                                hoverBorderWidth: 3,
-                                hoverBorderColor: '#e3e6e8'
-                            },
-                            {
-                                label: "Age: 65+",
-                                data: [<?php echo $g4; ?>],
-                                backgroundColor: "#FFCF44",
-                                borderWidth: 1,
-                                borderColor: '#e3e6e8',
-                                hoverBorderWidth: 3,
-                                hoverBorderColor: '#e3e6e8'
-                            }]
+                                    label: "Age: 15-24",
+                                    data: [<?php echo $g1; ?>],
+                                    backgroundColor: "#1EB980",
+                                    borderWidth: 1,
+                                    borderColor: '#e3e6e8',
+                                    hoverBorderWidth: 3,
+                                    hoverBorderColor: '#e3e6e8'
+                                },
+                                {
+                                    label: "Age: 25-40",
+                                    data: [<?php echo $g2; ?>],
+                                    backgroundColor: "#045D56",
+                                    borderWidth: 1,
+                                    borderColor: '#e3e6e8',
+                                    hoverBorderWidth: 3,
+                                    hoverBorderColor: '#e3e6e8'
+                                },
+                                {
+                                    label: "Age: 41-64",
+                                    data: [<?php echo $g3; ?>],
+                                    backgroundColor: "#FF6859",
+                                    borderWidth: 1,
+                                    borderColor: '#e3e6e8',
+                                    hoverBorderWidth: 3,
+                                    hoverBorderColor: '#e3e6e8'
+                                },
+                                {
+                                    label: "Age: 65+",
+                                    data: [<?php echo $g4; ?>],
+                                    backgroundColor: "#FFCF44",
+                                    borderWidth: 1,
+                                    borderColor: '#e3e6e8',
+                                    hoverBorderWidth: 3,
+                                    hoverBorderColor: '#e3e6e8'
+                                }
+                            ]
                         },
                         options: {
                             scales: {
@@ -233,6 +236,111 @@
                                     scaleLabel: {
                                         display: true,
                                         labelString: 'Time Zone'
+                                    }
+                                }]
+                            },
+                            layout: {
+                                padding: {
+                                    left: 50,
+                                    right: 0,
+                                    bottom: 0,
+                                    top: 0
+                                }
+                            },
+                            tooltips: {
+                                enabled: true
+                            }
+                        }
+                    });
+                </script>
+            </div>
+            <div class="carousel-item align-items-center" style="width: 80%; height: 517.8px; background-color: #e3e6e8;">
+                <div class="h4" style="color: #354856;">Top 3 Products per Age Group</div>
+                <div class="container-fluid">
+                    <div class="row row-cols-2">
+                        <div class="col">
+                            <div class="h4 pl-2 mt-3" style="color: #354856;">Age: 15-24</div>
+                            <ul class="list-group" style="font-size: 0.9rem; font-weight: 400; line-height: 1.5; color: #354856;">
+                                <?php foreach ($top3s as $top3) {
+                                    if ($top3['age_group'] == 'Age: 15-24') { ?>
+                                        <li class="list-group-item d-flex justify-content-between"><?php echo ucfirst($top3['prname']) . ', ' . $top3['brand'] ?><span class="badge"><?php echo $top3['total'] ?></span></li>
+                                <?php }
+                                } ?>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <div class="h4 pl-2 mt-3" style="color: #354856;">Age: 25-40</div>
+                            <ul class="list-group" style="font-size: 0.9rem; font-weight: 400; line-height: 1.5; color: #354856;">
+                                <?php foreach ($top3s as $top3) {
+                                    if ($top3['age_group'] == 'Age: 25-40') { ?>
+                                        <li class="list-group-item d-flex justify-content-between"><?php echo ucfirst($top3['prname']) . ', ' . $top3['brand'] ?><span class="badge"><?php echo $top3['total'] ?></span></li>
+                                <?php }
+                                } ?>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <div class="h4 pl-2 mt-3" style="color: #354856;">Age: 41-64</div>
+                            <ul class="list-group" style="font-size: 0.9rem; font-weight: 400; line-height: 1.5; color: #354856;">
+                                <?php foreach ($top3s as $top3) {
+                                    if ($top3['age_group'] == 'Age: 41-64') { ?>
+                                        <li class="list-group-item d-flex justify-content-between"><?php echo ucfirst($top3['prname']) . ', ' . $top3['brand'] ?><span class="badge"><?php echo $top3['total'] ?></span></li>
+                                <?php }
+                                } ?>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <div class="h4 pl-2 mt-3" style="color: #354856;">Age: 65+</div>
+                            <ul class="list-group" style="font-size: 0.9rem; font-weight: 400; line-height: 1.5; color: #354856;">
+                                <?php foreach ($top3s as $top3) {
+                                    if ($top3['age_group'] == 'Age: 65+') { ?>
+                                        <li class="list-group-item d-flex justify-content-between"><?php echo ucfirst($top3['prname']) . ', ' . $top3['brand'] ?><span class="badge"><?php echo $top3['total'] ?></span></li>
+                                <?php }
+                                } ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="carousel-item align-items-center" style="width: 80%; height: 517.8px; background-color: #e3e6e8;">
+                <div class="h4" style="color: #354856;">Card Points per Age Group</div>
+                <canvas id="myChart4" class="chart" style="height: 517.8px; margin-left: -4%"></canvas>
+                <script>
+                    let myChart4 = document.getElementById('myChart4').getContext('2d');
+                    let massPopChart4 = new Chart(myChart4, {
+                        type: 'horizontalBar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+                        data: {
+                            labels: ["Age: 15-24", "Age: 25-40", "Age: 41-64", "Age: 65+"],
+                            datasets: [{
+                                    label: "Points Redeemed (%)",
+                                    data: [<?php echo $redp; ?>],
+                                    backgroundColor: "rgb(4, 93, 86)",
+                                    borderWidth: 1,
+                                    borderColor: '#e3e6e8',
+                                    hoverBorderWidth: 3,
+                                    hoverBorderColor: '#e3e6e8'
+                                },
+                                {
+                                    label: "Current Points (%)",
+                                    data: [<?php echo $curp; ?>],
+                                    backgroundColor: "rgb(255, 104, 89)",
+                                    borderWidth: 1,
+                                    borderColor: '#e3e6e8',
+                                    hoverBorderWidth: 3,
+                                    hoverBorderColor: '#e3e6e8'
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max: 100
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Percentage (%)'
                                     }
                                 }]
                             },

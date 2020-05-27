@@ -76,7 +76,7 @@ if ($catfix == true) {
 
 <!-- Profit per Hour for Selected Stores -->
 <?php if ($catfix == false) { ?>
-    <canvas id="myChart" class="chart" width="962" height="481"></canvas>
+    <canvas id="myChart" class="chart" height="140"></canvas>
     <script>
         let myChart = document.getElementById('myChart').getContext('2d');
         let massPopChart = new Chart(myChart, {
@@ -144,7 +144,7 @@ if ($catfix == true) {
     </script>
 <?php } else { ?>
     <!-- Profit per Category for Selected Stores -->
-    <canvas id="myChart2" class="chart" width="962" height="481"></canvas>
+    <canvas id="myChart2" class="chart" height="140"></canvas>
     <script>
         let myChart2 = document.getElementById('myChart2').getContext('2d');
         let massPopChart2 = new Chart(myChart2, {
@@ -166,13 +166,6 @@ if ($catfix == true) {
                     text: 'Profit per Category for selected Store(s) in €',
                     fontColor: '#354856',
                     fontSize: 20
-                },
-                legend: {
-                    display: false,
-                    position: 'right',
-                    labels: {
-                        fontColor: '#000'
-                    }
                 },
                 layout: {
                     padding: {

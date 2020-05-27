@@ -134,7 +134,6 @@
             </div>
             <div class="container-fluid">
                 <button type="submit" name="submit" value="submit" class="btn btn-block" style="float: right; color:#e3e6e8; background-color:#354856;">Submit</button>
-                <a type="button" href="edit_purchase.php?storeid=11&seeprod=1" class="btn btn-block my-3" style="float: right; color:#e3e6e8; background-color:#eba325;">New Purchase</a>
             </div>
         </form>
         <div class="col-9" id="purtable">
@@ -213,6 +212,7 @@
                         <thead>
                             <tr style="text-align: center;">
                                 <th scope="col">Product Name</th>
+                                <th scope="col">Brand</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Cost</th>
                                 <th scope="col">Category</th>
@@ -222,6 +222,7 @@
                             <?php foreach ($purs as $pur) { ?>
                                 <tr style="text-align: center;" data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
                                     <th scope="row"><?php echo $pur['prname'] ?></th>
+                                    <td><?php echo $pur['brand'] ?></td>
                                     <td><?php echo $pur['amount'] ?></td>
                                     <td><?php echo $pur['cost'] * $pur['amount'] ?> €</td>
                                     <td><?php echo $pur['name'] ?></td>

@@ -282,3 +282,133 @@ $g2 = substr($g2, 0, -2);
 $g3 = substr($g3, 0, -2);
 $g4 = substr($g4, 0, -2);
 $labelall = substr($labelall, 0, -2);
+
+/*Top 3 products by age group */
+if ($storefix == false) {
+    $sql6 = '(SELECT * FROM ( SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid
+    group by age_group, prname, brand
+    order by age_group, total desc) AS t
+    WHERE t.age_group = "Age: 15-24" order by t.total desc limit 3)
+    union all
+    (SELECT * FROM (SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid
+    group by age_group, prname, brand
+    order by age_group, total desc) AS t WHERE t.age_group = "Age: 25-40" order by t.total desc limit 3)
+    union all
+    (SELECT * FROM (SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid
+    group by age_group, prname, brand
+    order by age_group, total desc) AS t WHERE t.age_group = "Age: 41-64" order by t.total desc limit 3)
+    union all
+    (SELECT * FROM (SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid
+    group by age_group, prname, brand
+    order by age_group, total desc) AS t WHERE t.age_group = "Age: 65+" order by t.total desc limit 3)';
+}
+else {
+    $sql6 = '(SELECT * FROM ( SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid and purchase.storeid IN ' .
+    $stores_sel .
+    ' group by age_group, prname, brand
+    order by age_group, total desc) AS t
+    WHERE t.age_group = "Age: 15-24" order by t.total desc limit 3)
+    union all
+    (SELECT * FROM (SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid and purchase.storeid IN ' .
+    $stores_sel .
+    ' group by age_group, prname, brand
+    order by age_group, total desc) AS t WHERE t.age_group = "Age: 25-40" order by t.total desc limit 3)
+    union all
+    (SELECT * FROM (SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid and purchase.storeid IN ' .
+    $stores_sel .
+    ' group by age_group, prname, brand
+    order by age_group, total desc) AS t WHERE t.age_group = "Age: 41-64" order by t.total desc limit 3)
+    union all
+    (SELECT * FROM (SELECT  SUM(purch_prod.amount) AS total , name AS prname, product.brand as brand,
+    (CASE
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+        WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+        ELSE "Age: 65+"
+    END) AS age_group
+    FROM purchase, purch_prod, customer, product
+    WHERE purchase.cardid = customer.cardid and purchase.purid = purch_prod.purid and purch_prod.productid = product.productid and purchase.storeid IN ' .
+    $stores_sel .
+    ' group by age_group, prname, brand
+    order by age_group, total desc) AS t WHERE t.age_group = "Age: 65+" order by t.total desc limit 3)';
+}
+
+$result6 = mysqli_query($conn, $sql6);
+$top3s = mysqli_fetch_all($result6, MYSQLI_ASSOC);
+
+/*Card Points by Age Group */
+$sql7 = 'SELECT  SUM(customer.points_redeemed) AS redeemedp , SUM(customer.current_points) AS currentp,
+(CASE
+	WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 24 THEN "Age: 15-24"
+    WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 40 THEN "Age: 25-40"
+    WHEN YEAR(CURRENT_TIMESTAMP) - DATE_FORMAT(customer.date_of_birth, "%Y") <= 64 THEN "Age: 41-64"
+    ELSE "Age: 65+"
+END) AS age_group
+FROM customer
+group by age_group;';
+
+$result7 = mysqli_query($conn, $sql7);
+while ($row = mysqli_fetch_array($result7, MYSQLI_ASSOC)) {
+    $div = (int)$row['redeemedp'] + (int) $row['currentp'];
+    $redp .=  number_format(((int)$row['redeemedp'] / $div * 100), 2, '.', '') . ', ';
+    $curp .=  number_format(((int)$row['currentp'] / $div * 100), 2, '.', '') . ', ';
+}
+
+$redp = substr($redp, 0, -2);
+$curp = substr($curp, 0, -2);
