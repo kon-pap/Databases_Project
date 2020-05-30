@@ -20,7 +20,8 @@ if (!$conn) {
 }
 
 if(isset($_GET['categoryid'])){
-    $myvar = $_GET['categoryid']  ;
+    $myvar = $_GET['categoryid'] ;
+    $_SESSION['cat'] = $myvar;
     $sqli = 'SELECT * FROM category WHERE catid = '.$myvar; 
     $Name =mysqli_query($conn, $sqli);
     $names = mysqli_fetch_array($Name, MYSQLI_ASSOC);
@@ -33,6 +34,10 @@ if(isset($_GET['categoryid'])){
     
     ?>
     </font>
+</div>
+<div class="btn-group btn-group-sm" role="group" aria-label="Basic example" >
+            <a href="prod_mod.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Modify products</a>
+            
 </div>
     <div class="col - 9">
             <table  class="table table-hover" style = "width:1000px; margin-left:auto; margin-right:auto;">

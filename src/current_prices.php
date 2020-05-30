@@ -15,10 +15,10 @@ echo $names['name'].'('.$names['brand'].')';
 </font>
 </div>
 
- <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-            <a href="hist.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Price History</a>
-            <a href="current_prices.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Current Prices</a>
-            <a href="price_changer.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Price Changer</a>
+ <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+            <a href="hist.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Price History</a>
+            <a href="current_prices.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Current Prices</a>
+            <a href="price_changer.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Price Changer</a>
 
             </div>
 <table  class="table" style = "width:800px; margin-left:auto; margin-right:auto;">

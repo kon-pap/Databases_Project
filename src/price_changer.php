@@ -1,7 +1,20 @@
 <?php session_start();?>
 <?php include 'products_sql.php';?>
 <?php include 'templates/header.php';?>
+<?php function numberOfDecimals($value)
+{
+    if ((int)$value == $value)
+    {
+        return 0;
+    }
+    else if (! is_numeric($value))
+    {
+        // throw new Exception('numberOfDecimals: ' . $value . ' is not a number!');
+        return false;
+    }
 
+    return strlen($value) - strrpos($value, '.') - 1;
+}?>
 <div style = "text-align :center"><font size = "350px">
 <?php
 $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');
@@ -13,14 +26,15 @@ if (isset($_GET['submit'])){
 
     $val = $_GET['inp']; #input
     
-    $up = 'UPDATE offers SET current_price = ' .$val .' WHERE (productid = '. $myvar.' AND storeid= '.$mystore.')';
-    #echo $myvar,'####', $mystore, '#####',$val;
-    mysqli_query($conn, $up);
+    
     $_SESSION['timh'] = $val;
     
     $sq = 'SELECT * FROM pricehistory WHERE ( storeid= '.$mystore.' AND productid = '. $myvar.')';
     $sq1 =mysqli_query($conn, $sq);
     $dates = mysqli_fetch_all($sq1, MYSQLI_ASSOC);
+    $magazia='SELECT * FROM store WHERE storeid='.$mystore;
+    $storia = mysqli_query($conn, $magazia);
+    $mymagazia = mysqli_fetch_array($storia, MYSQLI_ASSOC);
 }
  #$date = date("Y/m/d");
  
@@ -34,10 +48,10 @@ if (isset($_GET['submit'])){
  
 </font>
 </div>
-<div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-            <a href="hist.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Price History</a>
-            <a href="current_prices.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Current Prices</a>
-            <a href="price_changer.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Price Changer</a>
+<div class="btn-group btn-group-sm" role="group" aria-label="Basic example" >
+            <a href="hist.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Price History</a>
+            <a href="current_prices.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Current Prices</a>
+            <a href="price_changer.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Price Changer</a>
 
             </div>
    
@@ -65,11 +79,15 @@ if (isset($_GET['submit'])){
 </form>
 
 <!-- finds max date -->
+
  <?php
  $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');
+
  if(isset($_GET['submit']))
  {
-                    
+    $sq = 'SELECT * FROM pricehistory WHERE ( storeid= '.$mystore.' AND productid = '. $myvar.')';
+    $sq1 =mysqli_query($conn, $sq);
+    $dates = mysqli_fetch_all($sq1, MYSQLI_ASSOC);     
      foreach ($dates as $dat) { 
          $max = 0;
          if ($dat['date']> $max) 
@@ -78,18 +96,90 @@ if (isset($_GET['submit'])){
          $kati = $dat['issales'];
         }
  }
-
+ 
+ 
 $hmer = date("Y-m-d");
-
-$kiouri =  "INSERT INTO pricehistory (storeid, productid, date, issales, newprice) VALUES (". $mystore . ','. $myvar. ',"' . $hmer . '",' . $kati . ','. $val.')';
-if(mysqli_query($conn, $kiouri)){
-    echo "Price changed successfully";
-}
-else{
-    echo "Something is wrong";
-}
- }
 ?>
+
+<!-- if the input is string-->
+    <?php if (!is_numeric($val) ):?>
+        <style>.msg1 {
+    margin: 30px auto; 
+    padding: 10px; 
+    border-radius: 5px; 
+    color: #8B0000; 
+    background: #ff4500; 
+    border: 1px solid #8B0000;
+    width: 50%;
+    text-align: center;
+}</style>
+<div class="msg1">Do not use characters. A number with maximum two decimals is required!</div>
+<?php endif?>
+<!--if user inserts a number with more than two decimals -->
+<?php 
+
+if(is_numeric($val) and numberOfDecimals($val) > 2 ):?>
+    <style>.msg1 {
+    margin: 30px auto; 
+    padding: 10px; 
+    border-radius: 5px; 
+    color: #8B0000; 
+    background: #ff7d66; 
+    border: 1px solid #8B0000;
+    width: 50%;
+    text-align: center;
+}</style>
+<div class="msg1">Only two decimals please!</div>
+<?php endif?>
+
+<?php if(($max === $hmer) and is_numeric($val) and numberOfDecimals($val) == 2):?>
+<!--if date is ok and the input is a number-->
+<style>.msg1 {
+    margin: 30px auto; 
+    padding: 10px; 
+    border-radius: 5px; 
+    color: #8B0000; 
+    background: #ff7d66; 
+    border: 1px solid #8B0000;
+    width: 50%;
+    text-align: center;
+}</style>
+<div class="msg1"><?php echo 'Price already changed today at '.$mymagazia['street_name'].' '.$mymagazia['street_number'].', '.$mymagazia['city'];?></div>
+    
+<?php endif ?>
+<?php if(($max !== $hmer)and is_numeric($val) and numberOfDecimals($val) == 2)
+{
+    $up = 'UPDATE offers SET current_price = ' .$val .' WHERE (productid = '. $myvar.' AND storeid= '.$mystore.')';
+    #echo $myvar,'####', $mystore, '#####',$val;
+    mysqli_query($conn, $up);
+    $kiouri = "INSERT INTO pricehistory (storeid, productid, date, issales, newprice) VALUES (". $mystore . ','. $myvar. ',"' . $hmer . '",' . $kati . ','. $val.')';
+}?>
+
+    <?php 
+    $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');
+    if(($max !== $hmer)and is_numeric($val) and numberOfDecimals($val) == 2 and mysqli_query($conn, $kiouri)):?>
+        <style>.msg {
+    margin: 30px auto; 
+    padding: 10px; 
+    border-radius: 5px; 
+    color: #3c763d; 
+    background: #dff0d8; 
+    border: 1px solid #3c763d;
+    width: 50%;
+    text-align: center;
+}</style>
+<div class="msg"><?php echo 'Price changed successfully at '.$mymagazia['street_name'].' '.$mymagazia['street_number'].', '.$mymagazia['city']; ?></div>
+    <?php endif?>
+
+
+    
+<?php  
+
+}
+ 
+
+?>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {

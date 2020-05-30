@@ -13,14 +13,15 @@ $reg = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
 
 <?php include 'templates/header.php';?>
-<div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-<a href="Athens.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Athens</a>
-<a href="Thessaloniki.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Thessaloniki</a>
-<a href="Patras.php" class="btn btn-secondary btn-lg active" role="button"style="background-color:#354856;">Patras</a>
 
-</div>
+
 <p><font size = "+2"><center>Thessaloniki</center></font></p>
-
+<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+<a href="Athens.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Athens</a>
+<a href="Thessaloniki.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Thessaloniki</a>
+<a href="Patras.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Patras</a>
+<a href="stores_mod.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Modify Stores</a>
+</div>
 <div class="col - 9">
             <table class="table">
                 <thead>
