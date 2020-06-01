@@ -100,6 +100,26 @@ if (isset($_GET['submit'])){
  
 $hmer = date("Y-m-d");
 ?>
+<?php 
+  $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');
+  $of='SELECT * FROM offers';
+  $ofi = mysqli_query($conn, $of);
+  $ergotelhs = mysqli_fetch_all($ofi, MYSQLI_ASSOC);
+  $store  = $_GET['storeid'];
+  ?>
+<?php 
+$flag = false;
+foreach($ergotelhs as $beth)
+{
+    if($beth['storeid']===$store and $beth['productid'] === $myvar)
+    ##if store and product combo already exists
+    {
+        $flag = true;
+    }
+    
+}
+?>
+
 
 <!-- if the input is string-->
     <?php if (!is_numeric($val) ):?>
@@ -108,7 +128,7 @@ $hmer = date("Y-m-d");
     padding: 10px; 
     border-radius: 5px; 
     color: #8B0000; 
-    background: #ff4500; 
+    background: #ff7d66; 
     border: 1px solid #8B0000;
     width: 50%;
     text-align: center;
@@ -118,7 +138,7 @@ $hmer = date("Y-m-d");
 <!--if user inserts a number with more than two decimals -->
 <?php 
 
-if(is_numeric($val) and numberOfDecimals($val) > 2 ):?>
+if(is_numeric($val) and numberOfDecimals($val) !== 2 ):?>
     <style>.msg1 {
     margin: 30px auto; 
     padding: 10px; 
@@ -129,10 +149,10 @@ if(is_numeric($val) and numberOfDecimals($val) > 2 ):?>
     width: 50%;
     text-align: center;
 }</style>
-<div class="msg1">Only two decimals please!</div>
+<div class="msg1">Τwo decimals please!</div>
 <?php endif?>
 
-<?php if(($max === $hmer) and is_numeric($val) and numberOfDecimals($val) == 2):?>
+<?php if(($max === $hmer) and is_numeric($val) and numberOfDecimals($val) === 2):?>
 <!--if date is ok and the input is a number-->
 <style>.msg1 {
     margin: 30px auto; 
@@ -147,16 +167,21 @@ if(is_numeric($val) and numberOfDecimals($val) > 2 ):?>
 <div class="msg1"><?php echo 'Price already changed today at '.$mymagazia['street_name'].' '.$mymagazia['street_number'].', '.$mymagazia['city'];?></div>
     
 <?php endif ?>
-<?php if(($max !== $hmer)and is_numeric($val) and numberOfDecimals($val) == 2)
+<?php if(($max !== $hmer) and is_numeric($val) and numberOfDecimals($val) == 2)
 {
-    $up = 'UPDATE offers SET current_price = ' .$val .' WHERE (productid = '. $myvar.' AND storeid= '.$mystore.')';
+    
+        $up = 'UPDATE offers SET current_price = ' .$val .' WHERE (productid = '. $myvar.' AND storeid= '.$mystore.')';
+        mysqli_query($conn, $up);
+    
+    
     #echo $myvar,'####', $mystore, '#####',$val;
-    mysqli_query($conn, $up);
+    
     $kiouri = "INSERT INTO pricehistory (storeid, productid, date, issales, newprice) VALUES (". $mystore . ','. $myvar. ',"' . $hmer . '",' . $kati . ','. $val.')';
 }?>
 
     <?php 
     $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');
+    
     if(($max !== $hmer)and is_numeric($val) and numberOfDecimals($val) == 2 and mysqli_query($conn, $kiouri)):?>
         <style>.msg {
     margin: 30px auto; 
@@ -170,9 +195,7 @@ if(is_numeric($val) and numberOfDecimals($val) > 2 ):?>
 }</style>
 <div class="msg"><?php echo 'Price changed successfully at '.$mymagazia['street_name'].' '.$mymagazia['street_number'].', '.$mymagazia['city']; ?></div>
     <?php endif?>
-
-
-    
+  
 <?php  
 
 }

@@ -63,6 +63,7 @@
             }
 
         }
+    $maxim = $megisto+1;
 ?>
 <style>
     .line {
@@ -221,14 +222,26 @@
         $shel = $_GET['shelve'];
         $issales = $_GET['val'];
         $quantity = $_GET['input1'];
+        
     ?>
     <?php 
     $flag = false;
+    $flag2 = false;
     foreach($pro1 as $pro)
     {
-        if((strcasecmp($pro['name'], $proname)===0 ) and (strcasecmp($pro['brand'], $brand === 0) ))
+        $qu = 'SELECT * FROM offers WHERE productid = '.$pro['productid']; 
+        $quer =mysqli_query($conn, $qu);
+        $query = mysqli_fetch_all($quer, MYSQLI_ASSOC);
+        foreach($query as $q)
         {
-            $flag = true;
+            if((strcasecmp($pro['name'], $proname)===0 ) and (strcasecmp($pro['brand'], $brand === 0) ) and $q['storeid'] === $store)
+            {
+                $flag = true; #when there is a combo of name and store
+            }
+            if((strcasecmp($pro['name'], $proname)===0 ) and (strcasecmp($pro['brand'], $brand === 0) ) and $q['storeid'] !== $store)
+            {
+                $flag2 = true; #when there is no combo of name and store
+            }
         }
     }
         ?>
@@ -252,7 +265,7 @@
         <?php if(!(is_numeric($proname)) and $proname !== '' and numberOfDecimals($price)===2 and $price !== '' and $flag === false):?>
         <?php
             $hmer = date("Y-m-d");
-            $maxim = $megisto+1;
+            
             if($brand === '')
             {
                 $brand = "Super Market's";
@@ -262,21 +275,53 @@
             {
             $islabel = 0;
             }
+
+        if ($flag2)
+        {
+            $id = 0;
+            
+            
+            foreach($pros as $pro)
+            {
+                if( strcasecmp($pro['name'], $proname)=== 0 and strcasecmp($pro['brand'], $brand) === 0)
+                
+                $id = $pro['productid'];
+            }
+            
+        if ($issales === 1)
+        {
+            $issales = 1;
+        }
+        else {$issales = 0;}
+        $pha ="INSERT INTO pricehistory (storeid, productid, date, issales, newprice) VALUES (". $store . ','. $id. ',"' . $hmer. '",' . $issales . ','. $price.')';
+        mysqli_query($conn, $pha);
+        $offsa = "INSERT INTO offers (storeid, productid, current_price, quantity,corridor, shelve) VALUES (". $store . ','. $id. ',' . $price . ',' . $quantity . ',"'. $cor.'",'.$shel.')';
+        mysqli_query($conn, $offsa);
+        }
+        else
+        {
         $proins = "INSERT INTO product (productid, name, islabel, brand,catid) VALUES (". $maxim . ',"'. $proname. '",' . $islabel . ',"' . $brand . '",'. $myvar.')';
         mysqli_query($conn, $proins);
-        
         if ($issales === 1)
         {
             $issales = 1;
         }
         else {$issales = 0;}
         $ph ="INSERT INTO pricehistory (storeid, productid, date, issales, newprice) VALUES (". $store . ','. $maxim. ',"' . $hmer. '",' . $issales . ','. $price.')';
-        
         mysqli_query($conn, $ph);
         $offs = "INSERT INTO offers (storeid, productid, current_price, quantity,corridor, shelve) VALUES (". $store . ','. $maxim. ',' . $price . ',' . $quantity . ',"'. $cor.'",'.$shel.')';
         mysqli_query($conn, $offs);
+        }
         ?>
-        <div class="msg"><?php echo $proname.'  added';?></div> 
+        <div class="msg">
+            <?php foreach ($reg as $r)
+                {
+                    if($r['storeid'] === $store)
+                    {
+                        echo strtolower($proname).'  added at '.$r['street_name'].','. $r['street_number'].','. $r['city'];
+                    }
+                }
+                ?></div> 
         <?php endif?>
      
         
