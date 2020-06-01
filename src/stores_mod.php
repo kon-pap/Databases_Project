@@ -151,7 +151,7 @@ $reg1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
         foreach($reg as $re)
             {               
                                 
-                if((strcasecmp($re['street_name'],$sname) === 0) and (strcasecmp($re['city'], $cit) === 0) and (strcasecmp($re['street_number'] , $snumb) === 0) and (strcasecmp($re['zip'], $zip) ===0 ) and (strcasecmp($re['sq_meters'],number_format($sm, 1))===0) )
+                if((strcasecmp($re['street_name'],$sname) === 0) and (strcasecmp($re['city'], $cit) === 0) and (strcasecmp($re['street_number'] , $snumb) === 0) and (strcasecmp($re['zip'], $zip) ===0 ))
                 {
                     $flag = true;
                 }          
