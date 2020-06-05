@@ -1,9 +1,6 @@
 <?php session_start();?>
 
-<?php include 'templates/header.php'; ?>
-<?php include 'customer_sql.php';?>
-
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", () => {
         const rows = document.querySelectorAll("tr[data-href]");
         rows.forEach(row => {
@@ -12,39 +9,69 @@
             })
         });
     });
-</script>
- <div class="col - 9">
-            <table  class="table table-hover" style = "width:1000px; margin-left:auto; margin-right:auto;">
-                <thead>
-                    <tr>
-                        <th scope="col">Customers</th>
-                                                
-                    </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($custom1 as $cust) { ?>
-     <tr data-href="<?php echo 'customer_new.php?customerid=' . $cat['cardid'] ?>"> 
-           <th scope="row"><?php echo $cat['name']?></th>
-           <td><?php echo $cus['current_points']?> </td>
-           <td><?php echo $cus['points_redeemed']?></td>
-           <td><?php echo $cus['first_name']?></td>
-           <td><?php echo $cus['last_name']?></td>
-           <td><?php echo $cus['street_name']?></td>
-           <td><?php echo $cus['street_number']?></td>
-           <td><?php echo $cus['apt_floor']?></td>
-           <td><?php echo $cus['city']?></td>
-           <td><?php echo $cus['zip']?></td>
-           <td><?php echo $cus['relationship_status']?></td>
-           <td><?php echo $cus['number_of_kids']?></td>
-           <td><?php echo $cus['date_of_birth']?></td>
+</script> -->
 
-           
-            <a href="<?php echo 'customer_new.php?customerid=' . $cat['cardid'] ?>"></a>
-     </tr>
- <?php } ?>
-                </tbody>
-                    
-            </table>
-        </div>
-</body>
+<?php
+
+    // connect with the Database
+    include('customer-db-connect.php');
+
+    // write query for all customers
+    // this symbol : * means that we want all the data 
+	$sql = 'SELECT * FROM customer ORDER BY cardid';
+
+	// get the result set (set of rows)
+	$result = mysqli_query($conn, $sql);
+
+    // fetch the resulting rows as an array
+    // so now $customers is an array
+	$customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+	// free the $result from memory (good practise)
+	mysqli_free_result($result);
+
+	// close connection
+	mysqli_close($conn);
+
+	// print_r($customers);
+
+?>
+
+<!DOCTYPE html>
+<html>
+
+    <?php include('templates/header.php'); ?>
+
+    <?php include('customer-header.php'); ?>
+
+    <h4 class="center grey-text">Customers</h4>
+    
+    <!-- this is a materialize class -->
+    
+    <div class="container">
+		<div class="row">
+
+			<?php foreach($customers as $customer): ?>
+
+				<div class="col s6 md3">
+					<div class="card z-depth-0">
+                        <img src="img/customer-profile.svg"class="customer">
+						    <div class="card-content center">
+							    <h6><?php echo htmlspecialchars($customer['cardid']); ?></h6>
+                                <div><?php echo htmlspecialchars($customer['first_name']); ?></div>
+                                <div><?php echo htmlspecialchars($customer['last_name']); ?></div>
+						    </div>
+						    <div class="card-action right-align">
+							    <a class="brand-text" href="customer-details.php?cardid=<?php echo $customer['cardid']?>">More info</a>
+						    </div>
+					    </div>
+				    </div>
+
+            <?php endforeach; ?>
+
+		</div>
+	</div>
+
+    <?php include('customer-footer.php'); ?>
+
 </html>
