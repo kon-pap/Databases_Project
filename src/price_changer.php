@@ -71,7 +71,7 @@ if (isset($_GET['submit'])){
                 </select>
     </div>
  </div>
- <div>
+ 
  
  <div class="col" style = "width:100px;">
  <button type="submit" name="submit" value="submit" class="btn btn-block" style="float: left; color:#e3e6e8; background-color:#354856; text-align:center;">Submit</button>

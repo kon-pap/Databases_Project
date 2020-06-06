@@ -200,17 +200,26 @@
             <label for="inputStore">
                 Choose Product
             </label>
-                <select id="inputStore" class="form-control" name="catid">
+                <select id="inputStore" class="form-control" name="productid">
                         <?php foreach ($pro1 as $pro) { ?>
-                            <option value="<?php echo $pro['pro'] ?>"> <?php echo $pro['name'].','.$pro['brand'];?>
+                            <option value="<?php echo $pro['productid'] ?>"> <?php echo $pro['name'].','.$pro['brand'];?>
                             </option>
                         <?php } ?>
                 </select>
         </div>
         <div class="row" style = "width:200px; margin:0 ;[B]padding:200px 0;[/B];padding-bottom: 50px; padding-left:15px;">
-            <button type="submit" name="delete" value="delete" class="btn btn-block" style="float: left; color:#e3e6e8; background-color:#354856; text-align:center;">Delete Category</button>
+            <button type="submit" name="delete1" value="delete1" class="btn btn-block" style="float: left; color:#e3e6e8; background-color:#354856; text-align:center;">Delete Product</button>
         </div>
 </form>
+<?php if(isset($_GET['delete1'])):?>
+<?php 
+    $prods = $_GET['productid'];
+    $dels = 'DELETE FROM product WHERE productid ='.$prods;
+    mysqli_query($conn, $dels);
+    ?>
+    <div class="msg"><?php echo "Product succesfully deleted"?></div>
+<?php endif?>
+
 
     <?php 
         $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');

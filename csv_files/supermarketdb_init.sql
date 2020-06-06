@@ -53,6 +53,7 @@ DROP TABLE IF EXISTS `has`;
 CREATE TABLE `has` (
   `catid` int(2) NOT NULL,
   `storeid` int(4) NOT NULL
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -105,8 +106,8 @@ CREATE TABLE `offers` (
   `corridor` char(1) NOT NULL,
   `shelve` int(1) NOT NULL,
   primary key(`storeid`,`productid`),
-  foreign key(`storeid`) references `store`(`storeid`),
-  foreign key(`productid`) references `product`(`productid`)
+  foreign key(`storeid`) references `store`(`storeid`) on delete cascade,
+  foreign key(`productid`) references `product`(`productid`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -122,7 +123,7 @@ CREATE TABLE `opening_hours` (
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   primary key(`day`,`storeid`),
-  foreign key(`storeid`) references `store`(`storeid`)
+  foreign key(`storeid`) references `store`(`storeid`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -153,8 +154,8 @@ CREATE TABLE `pricehistory` (
   `issales` tinyint(1) NOT NULL,
   `newprice` decimal(6,2) NOT NULL,
   primary key (`storeid`,`productid`,`date`),
-  foreign key(`storeid`) references `store`(`storeid`),
-  foreign key(`productid`) references `product`(`productid`)
+  foreign key(`storeid`) references `store`(`storeid`) on delete cascade,
+  foreign key(`productid`) references `product`(`productid`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -171,10 +172,10 @@ CREATE TABLE `purchase` (
   `payment_method` varchar(11) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
-  `storeid` int(4) NOT NULL,
+  `storeid` int(4),
   `cardid` bigint(16) NOT NULL,
   primary key (`purid`),
-  foreign key(`storeid`) references `store`(`storeid`),
+  foreign key(`storeid`) references `store`(`storeid`) on delete set null,
   foreign key(`cardid`) references `customer`(`cardid`),
   unique key uniq_trans (`date`,`time`,`storeid`,`cardid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -193,7 +194,7 @@ CREATE TABLE `purch_prod` (
   `amount` decimal(3,0) NOT NULL,
   primary key (`purid`,`productid`),
   foreign key (`purid`) references `purchase`(`purid`),
-  foreign key (`productid`) references `product`(`productid`) 
+  foreign key (`productid`) references `product`(`productid`) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

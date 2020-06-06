@@ -11,6 +11,16 @@ $result = mysqli_query($conn, $sql);
 
 $reg = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const rows = document.querySelectorAll("tr[data-href]");
+        rows.forEach(row => {
+            row.addEventListener("click", () => {
+                window.location.href = row.dataset.href;
+            })
+        });
+    });
+</script>
 
 <?php include 'templates/header.php';?>
 
@@ -33,11 +43,12 @@ $reg = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </thead>
                 <tbody>
                     <?php foreach ($reg as $ath) { ?>
-                        <tr>
+                        <tr data-href="<?php echo 'opening_hours.php?storeid=' . $ath['storeid'] ?>"> 
                             <th scope="row"><?php echo $ath['street_name']?></th>
                             <td><?php echo $ath['street_number']?> </td>
                             <td><?php echo $ath['zip']?></td>
                             <td><?php echo $ath['sq_meters']?></td>
+                            <a href="<?php echo 'opening_hours.php?storeid=' . $ath['storeid'] ?>"></a>
                         </tr>
                     <?php } ?>
             </table>

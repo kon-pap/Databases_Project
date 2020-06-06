@@ -1,7 +1,7 @@
 
 <?php include 'templates/header.php'; ?>
 
-<p><font size = "350px"><center>Twenty stores all over Greece are waiting for you!</center></font></p>
+<p><font size = "350px"><center>Welcome to our SuperMarket</center></font></p>
 <p><font size = "+1"><center>Choose the region you would like to search </center></font></p>
 <div class="d-flex justify-content-center py-4">
 

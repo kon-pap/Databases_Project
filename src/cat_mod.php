@@ -16,6 +16,17 @@
     width:100%;
     top: 390px;
     }
+    .msg 
+    {
+    margin: 30px auto; 
+    padding: 10px; 
+    border-radius: 5px; 
+    color: #3c763d; 
+    background: #dff0d8; 
+    border: 1px solid #3c763d;
+    width: 50%;
+    text-align: center;
+    } 
 </style>
 <form action = '/cat_mod.php' method="GET" >
 
@@ -49,7 +60,7 @@
         </label>
             <select id="inputStore" class="form-control" name="catid">
                     <?php foreach ($categ1 as $cat) { ?>
-                        <option value="<?php echo $cat['cat'] ?>"> <?php echo $cat['name'];?>
+                        <option value="<?php echo $cat['catid'] ?>"> <?php echo $cat['name'];?>
                         </option>
                     <?php } ?>
             </select>
@@ -59,6 +70,14 @@
     </div>
 
 </form>
+<?php if(isset($_GET['delete'])):?>
+<?php 
+    $cat = $_GET['catid'];
+    $del = 'DELETE FROM category WHERE catid ='.$cat;
+    mysqli_query($conn, $del);
+    ?>
+    <div class="msg"><?php echo "Category succesfully deleted"?></div>
+<?php endif?>
 <?php
     $conn = mysqli_connect('192.168.99.100', 'root', 'root', 'supermarketdb');
 
