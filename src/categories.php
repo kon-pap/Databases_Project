@@ -12,6 +12,7 @@
         });
     });
 </script>
+<p><font size = "350px"><center>Categories</center></font></p>
 <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
             <a href="cat_mod.php" class="btn btn-secondary btn-sm active" role="button"style="background-color:#354856;">Modify categories</a>
 </div>

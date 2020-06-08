@@ -179,7 +179,6 @@ $reg1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
     $fri = "Friday";
     $sat = "Saturday";
     
-    echo $close6 == ""; 
     
     
 ?>
