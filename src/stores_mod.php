@@ -146,7 +146,7 @@ $reg1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
 <?php if(isset($_GET['deleteS'])):?>
 <?php 
     $stor = $_GET['storeid'];
-    echo $stor;
+    
 
     $del = 'DELETE FROM store WHERE storeid ='.$stor;
     mysqli_query($conn, $del);
