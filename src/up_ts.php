@@ -59,7 +59,6 @@ $_SESSION['storeid'] = $myvar;
     
     <?php #var_dump (isset($_GET['submit42']));
      if (isset($_GET['submit'])):
-        echo "hi";
     
    
     $open11 = $_GET['open11'];
