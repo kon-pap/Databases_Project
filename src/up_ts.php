@@ -99,7 +99,7 @@ $_SESSION['storeid'] = $myvar;
     $op61 = 'UPDATE opening_hours SET start_time="' .$open61. ':00", end_time="'.$close61. '" WHERE (storeid = '. $myvar.' AND day= "'.$sat.'")';
     mysqli_query($conn, $op61);
     ?>
-     <div class="msg">Changed Timeslot succesfullys</div>
+     <div class="msg">Changed Timeslot succesfully</div>
     <?php endif?>
     <?php endif ?>
     
