@@ -4,10 +4,16 @@
     include('customer-db-connect.php');
 
     //intialize them as empty strings
-    $cardid = $first_name = $last_name = $card_exp_date = $current_points = $points_redeemed = 
-    $city = $street_name = $street_number = $zip = $apt_floor = $number_of_kids = 
-    $date_of_birth = $relationship_status = '';
+    $first_name = $last_name = $card_exp_date = $city = $street_name = $street_number =
+    $zip = $apt_floor = $number_of_kids = $date_of_birth = $relationship_status = '';
 
+    //initialize with a random cardid
+    $cardid = rand(1000000000000, 1000000000000000000);
+
+    //initialize them with zero
+    $current_points = $points_redeemed = 0;
+
+    
     //a variable with the strings that are wrong
     $errors = array('cardid' => '', 'first_name' => '', 'last_name' => '', 'card_exp_date' => '', 'current_points' => '', 'points_redeemed' => '', 'city' => '', 'street_name' => '',
                     'street_number' => '', 'zip' => '', 'apt_floor' => '', 'number_of_kids' => '', 'date_of_birth' => '', 'relationship_status' => ''); 
@@ -177,9 +183,9 @@
             $relationship_status = mysqli_real_escape_string($conn, $_POST['relationship_status']);
             
             // create sql
-			$sql = "INSERT INTO customers(cardid, first_name, last_name, card_exp_date, current_points, points_redeemed,
+			$sql = "INSERT INTO customer(cardid, first_name, last_name, card_exp_date, current_points, points_redeemed,
             city, street_name, street_number, zip, apt_floor, number_of_kids, date_of_birth, relationship_status) 
-            VALUES('$cardid', $first_name', '$last_name', '$card_exp_date', '$current_points', '$points_redeemed', '$city',
+            VALUES('$cardid', '$first_name', '$last_name', '$card_exp_date', '$current_points', '$points_redeemed', '$city',
             '$street_name', '$street_number', '$zip', '$apt_floor', '$number_of_kids', '$date_of_birth', '$relationship_status')";
 
             // save to database and check
@@ -218,8 +224,8 @@
             <!-- CardID -->
             <label>CardID: </label>
             <input type="text" name="cardid" 
-            pattern="[0-9]{0,5}" 
-			title="This should be a number with up to 5 digits."
+            pattern="[0-9]{0,20}" 
+			title="This should be a number with up to 20 digits."
             value="<?php echo htmlspecialchars($cardid) ?>">
             <div class="red-text"><?php echo $errors['cardid']; ?></div>
 
@@ -241,6 +247,7 @@
 
             <!-- Card Expiration Date -->
             <label>Card Expiration Date:</label>
+            <h6>The appropriate format is: YYYY-MM-DD</h6>
             <input type="text" name="card_exp_date" 
             pattern=".{10,}"
 			title="Please enter a valid date with YYYY-MM-DD format"
@@ -275,7 +282,7 @@
             <label>Street Name:</label>
             <input type="text" name="street_name" 
             pattern="[a-zA-Z]{1,30}"
-			title="Enter more than 3 and less than 30 letters">
+			title="Enter more than 3 and less than 30 letters"
             value="<?php echo htmlspecialchars($street_name) ?>">
             <div class="red-text"><?php echo $errors['street_name']; ?></div>
 
@@ -313,6 +320,7 @@
             
             <!-- Date of Birth -->
             <label>Date of Birth: </label>
+            <h6>The appropriate format is: YYYY-MM-DD</h6>
             <input type="text" name="date_of_birth" 
             pattern=".{10,}"
 			title="Please enter a valid date with YYYY-MM-DD format"
