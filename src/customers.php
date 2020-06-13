@@ -53,7 +53,7 @@
 
 			<?php foreach($customers as $customer): ?>
 
-				<div class="col s6 md3">
+				<div class="col-sm-6 col-md-3">
 					<div class="card z-depth-0">
                         <img src="img/customer-profile.png"class="customer">
 						    <div class="card-content center">
@@ -62,7 +62,7 @@
                                 <div><?php echo htmlspecialchars($customer['last_name']); ?></div>
 						    </div>
 						    <div class="card-action right-align">
-							    <a class="brand-text" href="customer-details.php?cardid=<?php echo $customer['cardid']?>">More info</a>
+							    <a class="brand-text" href="customer_profile.php?cardid=<?php echo $customer['cardid']. '&seehours=1'?>">More info</a>
 						    </div>
 					    </div>
 				    </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Φιλοξενητής: db
--- Χρόνος δημιουργίας: 27 Μάη 2020 στις 08:53:17
+-- Χρόνος δημιουργίας: 13 Ιουν 2020 στις 12:20:50
 -- Έκδοση διακομιστή: 5.7.20
 -- Έκδοση PHP: 7.4.5
 
@@ -22,6 +22,22 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `supermarketdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `supermarketdb`;
+
+DELIMITER $$
+--
+-- Συναρτήσεις
+--
+DROP FUNCTION IF EXISTS `FIRST_DAY_OF_WEEK`$$
+CREATE DEFINER=`root`@`%` FUNCTION `FIRST_DAY_OF_WEEK` (`day` DATE) RETURNS DATE BEGIN
+  RETURN SUBDATE(day, WEEKDAY(day));
+END$$
+
+DROP FUNCTION IF EXISTS `LAST_DAY_OF_WEEK`$$
+CREATE DEFINER=`root`@`%` FUNCTION `LAST_DAY_OF_WEEK` (`day` DATE) RETURNS DATE BEGIN
+  RETURN SUBDATE(day, WEEKDAY(day)-6);
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -76,7 +92,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`cardid`, `card_exp_date`, `current_points`, `points_redeemed`, `first_name`, `last_name`, `street_name`, `street_number`, `apt_floor`, `city`, `zip`, `relationship_status`, `number_of_kids`, `date_of_birth`) VALUES
-(30302136787797, '2021-04-23', '123', '35', 'Fotini', 'Markidou', 'MEgalopolis', '23', '4', 'Thessaloniki', '51516', 'married', 2, '1954-07-31'),
+(30302136787797, '2021-04-23', '123', '35', 'Fotini', 'Markidou', 'Megalopolis', '23', '4', 'Thessaloniki', '51516', 'married', 2, '1954-07-31'),
 (30306750272465, '2023-08-27', '847', '95', 'Stavros', 'Stavropoulos', 'Kennedy', '6', '2', 'Patras', '20560', 'divorced', 1, '1956-08-05'),
 (30387378609171, '2021-07-16', '566', '50', 'Eleonora', 'Dakou', 'Ag.Petrou', '33', '5', 'Patras', '26332', 'married', 0, '1971-07-29'),
 (36354690593594, '2021-07-10', '110', '55', 'Michalis', 'Kandylakis', 'Milou', '23', '3', 'Thessaloniki', '51522', 'married', 4, '1980-05-15'),
@@ -2166,7 +2182,8 @@ INSERT INTO `offers` (`storeid`, `productid`, `current_price`, `quantity`, `corr
 (12, 95, '4.36', 50, 'E', 1),
 (12, 96, '5.47', 38, 'E', 1),
 (12, 97, '5.25', 38, 'E', 1),
-(12, 98, '4.57', 14, 'E', 1),
+(12, 98, '4.57', 14, 'E', 1);
+INSERT INTO `offers` (`storeid`, `productid`, `current_price`, `quantity`, `corridor`, `shelve`) VALUES
 (12, 99, '3.91', 32, 'E', 1),
 (12, 100, '5.28', 31, 'E', 1),
 (12, 101, '1.00', 27, 'E', 1),
@@ -5348,7 +5365,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (2, 67, '2018-01-01', 0, '2.30'),
 (2, 67, '2018-04-09', 1, '2.60'),
 (2, 67, '2018-07-21', 1, '2.33'),
-(2, 67, '2019-10-16', 0, '3.23'),
+(2, 67, '2019-10-16', 0, '3.23');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (2, 68, '2018-01-01', 0, '1.91'),
 (2, 68, '2018-03-01', 0, '2.08'),
 (2, 68, '2018-05-30', 0, '2.89'),
@@ -6883,7 +6901,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (3, 136, '2018-07-07', 0, '9.26'),
 (3, 136, '2018-08-04', 0, '12.80'),
 (3, 136, '2018-12-14', 0, '12.87'),
-(3, 136, '2019-02-15', 1, '13.89'),
+(3, 136, '2019-02-15', 1, '13.89');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (3, 136, '2019-06-24', 0, '9.61'),
 (3, 136, '2020-04-22', 0, '11.15'),
 (3, 137, '2018-01-01', 1, '3.02'),
@@ -8423,7 +8442,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (5, 46, '2019-01-31', 0, '12.04'),
 (5, 46, '2019-02-12', 0, '11.34'),
 (5, 46, '2019-11-03', 0, '10.33'),
-(5, 46, '2020-04-29', 0, '11.20'),
+(5, 46, '2020-04-29', 0, '11.20');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (5, 47, '2018-01-01', 0, '20.36'),
 (5, 47, '2018-01-22', 0, '19.59'),
 (5, 47, '2018-11-29', 0, '18.81'),
@@ -9961,7 +9981,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (6, 108, '2018-04-28', 0, '2.28'),
 (6, 108, '2018-07-30', 0, '2.06'),
 (6, 108, '2019-09-17', 0, '1.68'),
-(6, 108, '2019-11-20', 0, '1.56'),
+(6, 108, '2019-11-20', 0, '1.56');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (6, 109, '2018-01-01', 0, '2.94'),
 (6, 109, '2018-06-22', 1, '4.43'),
 (6, 109, '2019-06-25', 0, '3.29'),
@@ -11494,7 +11515,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (8, 13, '2018-10-03', 0, '1.34'),
 (8, 13, '2019-02-21', 0, '1.06'),
 (8, 13, '2019-05-16', 1, '1.06'),
-(8, 13, '2019-09-13', 0, '0.98'),
+(8, 13, '2019-09-13', 0, '0.98');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (8, 13, '2019-09-16', 0, '1.28'),
 (8, 14, '2018-01-01', 0, '1.70'),
 (8, 14, '2018-04-08', 0, '1.66'),
@@ -13035,7 +13057,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (9, 77, '2018-10-05', 0, '2.81'),
 (9, 77, '2018-12-27', 0, '1.90'),
 (9, 77, '2019-02-05', 0, '1.97'),
-(9, 77, '2019-09-07', 0, '1.84'),
+(9, 77, '2019-09-07', 0, '1.84');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (9, 77, '2019-10-05', 0, '1.32'),
 (9, 77, '2019-12-29', 0, '2.31'),
 (9, 77, '2020-01-21', 0, '1.77'),
@@ -14540,7 +14563,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (10, 137, '2018-05-05', 1, '1.61'),
 (10, 137, '2018-07-13', 0, '1.26'),
 (10, 137, '2018-10-03', 0, '1.59'),
-(10, 137, '2018-10-25', 0, '2.60'),
+(10, 137, '2018-10-25', 0, '2.60');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (10, 137, '2019-10-08', 0, '2.58'),
 (10, 138, '2018-01-01', 0, '11.78'),
 (10, 138, '2018-04-09', 0, '11.04'),
@@ -16034,7 +16058,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (12, 42, '2019-02-18', 1, '1.64'),
 (12, 42, '2019-09-12', 0, '1.76'),
 (12, 42, '2019-11-25', 0, '1.99'),
-(12, 42, '2020-02-06', 1, '1.67'),
+(12, 42, '2020-02-06', 1, '1.67');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (12, 42, '2020-04-19', 0, '1.85'),
 (12, 43, '2018-01-01', 0, '1.82'),
 (12, 43, '2019-10-12', 0, '2.16'),
@@ -17527,7 +17552,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (13, 109, '2019-02-02', 1, '2.30'),
 (13, 110, '2018-01-01', 0, '5.57'),
 (13, 110, '2018-06-09', 0, '5.87'),
-(13, 110, '2019-09-26', 1, '5.34'),
+(13, 110, '2019-09-26', 1, '5.34');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (13, 110, '2019-10-30', 1, '5.44'),
 (13, 110, '2019-11-01', 0, '5.39'),
 (13, 110, '2020-03-22', 0, '6.16'),
@@ -19014,7 +19040,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (15, 16, '2019-04-06', 0, '2.63'),
 (15, 16, '2019-04-29', 0, '2.50'),
 (15, 16, '2020-01-13', 0, '2.55'),
-(15, 17, '2018-01-01', 0, '3.35'),
+(15, 17, '2018-01-01', 0, '3.35');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (15, 17, '2018-01-31', 0, '4.12'),
 (15, 17, '2018-03-18', 0, '3.19'),
 (15, 17, '2018-05-10', 0, '3.96'),
@@ -19044,8 +19071,7 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (15, 21, '2018-08-14', 0, '6.80'),
 (15, 21, '2018-12-24', 0, '6.49'),
 (15, 21, '2019-06-09', 1, '6.48'),
-(15, 21, '2019-08-06', 1, '6.68');
-INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
+(15, 21, '2019-08-06', 1, '6.68'),
 (15, 21, '2019-10-22', 0, '6.58'),
 (15, 21, '2020-04-29', 0, '6.40'),
 (15, 22, '2018-01-01', 0, '7.11'),
@@ -20509,7 +20535,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (16, 75, '2019-10-22', 0, '1.32'),
 (16, 75, '2020-01-19', 0, '0.76'),
 (16, 76, '2018-01-01', 1, '1.56'),
-(16, 76, '2018-04-17', 1, '1.22'),
+(16, 76, '2018-04-17', 1, '1.22');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (16, 76, '2019-01-15', 0, '1.56'),
 (16, 76, '2019-03-31', 0, '1.56'),
 (16, 76, '2020-03-31', 1, '1.60'),
@@ -21997,7 +22024,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (17, 132, '2018-12-18', 0, '6.02'),
 (17, 132, '2019-10-25', 1, '4.69'),
 (17, 132, '2019-12-30', 0, '6.50'),
-(17, 132, '2020-02-17', 0, '5.32'),
+(17, 132, '2020-02-17', 0, '5.32');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (17, 133, '2018-01-01', 0, '12.71'),
 (17, 133, '2018-10-14', 0, '13.11'),
 (17, 133, '2018-10-26', 0, '13.23'),
@@ -23489,7 +23517,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (19, 39, '2019-01-29', 0, '7.45'),
 (19, 39, '2019-07-05', 0, '5.90'),
 (19, 39, '2019-11-22', 0, '7.05'),
-(19, 39, '2020-01-22', 0, '6.67'),
+(19, 39, '2020-01-22', 0, '6.67');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (19, 39, '2020-04-24', 1, '7.13'),
 (19, 40, '2018-01-01', 0, '5.44'),
 (19, 40, '2018-01-02', 1, '5.40'),
@@ -24984,7 +25013,8 @@ INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice
 (20, 93, '2019-09-05', 0, '5.60'),
 (20, 93, '2019-10-13', 0, '4.91'),
 (20, 93, '2019-11-05', 0, '2.71'),
-(20, 93, '2020-02-11', 1, '1.23'),
+(20, 93, '2020-02-11', 1, '1.23');
+INSERT INTO `pricehistory` (`storeid`, `productid`, `date`, `issales`, `newprice`) VALUES
 (20, 94, '2018-01-01', 0, '2.87'),
 (20, 94, '2018-04-03', 0, '2.53'),
 (20, 94, '2018-08-15', 0, '2.33'),
@@ -25594,8 +25624,8 @@ CREATE TABLE `purchase` (
   `payment_method` varchar(11) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
-  `storeid` int(4) NOT NULL,
-  `cardid` bigint(16) NOT NULL
+  `storeid` int(4) DEFAULT NULL,
+  `cardid` bigint(16) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -26280,7 +26310,8 @@ INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `sto
 (675, '116.68', 'credit card', '2019-04-09', '17:46:42', 13, 6709215957576635),
 (676, '68.52', 'credit card', '2019-11-04', '10:03:36', 13, 6709215957576635),
 (677, '35.26', 'cash', '2018-01-10', '16:27:18', 17, 6709215957576635),
-(678, '34.80', 'cash', '2018-08-30', '20:36:40', 15, 6709215957576635),
+(678, '34.80', 'cash', '2018-08-30', '20:36:40', 15, 6709215957576635);
+INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `storeid`, `cardid`) VALUES
 (679, '126.48', 'cash', '2018-03-05', '21:54:08', 20, 6709215957576635),
 (680, '65.03', 'credit card', '2019-02-01', '16:12:53', 11, 6709215957576635),
 (681, '82.20', 'credit card', '2019-03-06', '17:10:34', 20, 6709215957576635),
@@ -26944,7 +26975,8 @@ INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `sto
 (1339, '134.44', 'credit card', '2020-05-10', '11:26:01', 19, 3569356686756787),
 (1340, '12.47', 'credit card', '2018-02-01', '11:20:16', 20, 3569356686756787),
 (1341, '81.67', 'credit card', '2020-09-17', '12:29:02', 18, 3569356686756787),
-(1342, '123.10', 'cash', '2019-03-04', '18:32:40', 13, 3569356686756787),
+(1342, '123.10', 'cash', '2019-03-04', '18:32:40', 13, 3569356686756787);
+INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `storeid`, `cardid`) VALUES
 (1343, '65.53', 'credit card', '2020-04-19', '17:03:22', 12, 3569356686756787),
 (1344, '121.07', 'credit card', '2018-08-10', '19:24:32', 13, 3569356686756787),
 (1345, '99.66', 'cash', '2019-03-08', '18:38:11', 16, 3569356686756787),
@@ -27606,7 +27638,8 @@ INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `sto
 (2001, '143.40', 'credit card', '2020-01-03', '14:50:34', 17, 374283683825996),
 (2002, '13.93', 'credit card', '2020-05-05', '10:47:21', 14, 374283683825996),
 (2003, '39.01', 'cash', '2019-08-12', '11:53:56', 20, 374283683825996),
-(2004, '28.12', 'credit card', '2020-04-26', '15:30:29', 19, 374283683825996),
+(2004, '28.12', 'credit card', '2020-04-26', '15:30:29', 19, 374283683825996);
+INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `storeid`, `cardid`) VALUES
 (2005, '31.28', 'credit card', '2020-07-11', '21:25:06', 16, 374283683825996),
 (2006, '75.86', 'cash', '2020-07-01', '13:19:32', 20, 374283683825996),
 (2007, '36.75', 'credit card', '2019-08-25', '13:04:21', 14, 374283683825996),
@@ -28276,7 +28309,8 @@ INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `sto
 (2671, '97.65', 'cash', '2020-08-14', '11:16:45', 8, 3578048947019647),
 (2672, '15.43', 'credit card', '2020-06-17', '15:38:16', 10, 3578048947019647),
 (2673, '15.84', 'credit card', '2018-01-13', '13:56:14', 6, 3578048947019647),
-(2674, '34.24', 'cash', '2020-06-19', '15:48:37', 10, 3578048947019647),
+(2674, '34.24', 'cash', '2020-06-19', '15:48:37', 10, 3578048947019647);
+INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `storeid`, `cardid`) VALUES
 (2675, '86.12', 'cash', '2019-08-04', '13:01:44', 8, 3578048947019647),
 (2676, '25.40', 'credit card', '2020-08-07', '20:53:05', 8, 3578048947019647),
 (2677, '39.82', 'cash', '2019-12-30', '16:10:22', 8, 3578048947019647),
@@ -28951,7 +28985,8 @@ INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `sto
 (3346, '76.81', 'credit card', '2020-05-23', '11:49:49', 5, 372301124352560),
 (3347, '33.49', 'credit card', '2019-05-27', '18:49:35', 1, 372301124352560),
 (3348, '83.88', 'cash', '2019-09-10', '11:15:36', 5, 372301124352560),
-(3349, '44.89', 'credit card', '2020-06-02', '13:17:06', 1, 372301124352560),
+(3349, '44.89', 'credit card', '2020-06-02', '13:17:06', 1, 372301124352560);
+INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `storeid`, `cardid`) VALUES
 (3350, '128.79', 'credit card', '2018-08-21', '14:14:51', 2, 372301124352560),
 (3351, '34.48', 'credit card', '2018-11-12', '20:26:54', 1, 372301124352560),
 (3352, '289.40', 'credit card', '2018-11-19', '15:30:32', 4, 372301124352560),
@@ -29621,7 +29656,8 @@ INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `sto
 (4016, '89.65', 'credit card', '2019-03-21', '15:32:30', 3, 6759715810673034644),
 (4017, '66.67', 'credit card', '2018-01-11', '21:40:23', 3, 6759715810673034644),
 (4018, '28.83', 'credit card', '2020-06-16', '18:40:43', 1, 6759715810673034644),
-(4019, '37.48', 'credit card', '2020-03-25', '13:28:46', 2, 6759715810673034644),
+(4019, '37.48', 'credit card', '2020-03-25', '13:28:46', 2, 6759715810673034644);
+INSERT INTO `purchase` (`purid`, `total`, `payment_method`, `date`, `time`, `storeid`, `cardid`) VALUES
 (4020, '18.51', 'cash', '2020-11-20', '19:32:40', 5, 6759715810673034644),
 (4021, '22.32', 'credit card', '2018-11-15', '16:04:39', 1, 6759715810673034644),
 (4022, '73.32', 'cash', '2019-12-30', '09:56:08', 2, 6759715810673034644),
@@ -32192,7 +32228,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (465, 151, '2.03', '1'),
 (466, 54, '12.38', '3'),
 (466, 76, '1.52', '4'),
-(466, 88, '5.86', '3'),
+(466, 88, '5.86', '3');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (466, 138, '8.93', '2'),
 (467, 26, '2.87', '2'),
 (467, 32, '3.72', '3'),
@@ -34414,7 +34451,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (905, 4, '1.28', '2'),
 (905, 85, '2.02', '4'),
 (905, 119, '1.11', '1'),
-(906, 9, '1.55', '4'),
+(906, 9, '1.55', '4');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (906, 33, '3.18', '2'),
 (906, 58, '2.10', '4'),
 (906, 70, '2.93', '2'),
@@ -36564,7 +36602,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (1337, 128, '1.82', '1'),
 (1337, 129, '12.58', '3'),
 (1338, 12, '1.63', '1'),
-(1338, 115, '4.37', '2'),
+(1338, 115, '4.37', '2');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (1339, 45, '19.85', '1'),
 (1339, 69, '1.91', '1'),
 (1339, 134, '17.84', '2'),
@@ -38691,7 +38730,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (1776, 20, '7.67', '1'),
 (1776, 30, '2.06', '4'),
 (1776, 98, '5.49', '4'),
-(1777, 3, '1.15', '1'),
+(1777, 3, '1.15', '1');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (1777, 119, '1.30', '2'),
 (1777, 140, '19.01', '3'),
 (1778, 24, '7.38', '3'),
@@ -40819,7 +40859,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (2204, 110, '5.70', '4'),
 (2204, 144, '15.21', '4'),
 (2204, 153, '1.93', '4'),
-(2205, 5, '1.27', '1'),
+(2205, 5, '1.27', '1');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (2205, 101, '0.96', '3'),
 (2206, 9, '1.85', '4'),
 (2206, 34, '2.20', '4'),
@@ -42947,7 +42988,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (2613, 127, '3.99', '3'),
 (2613, 143, '4.86', '2'),
 (2614, 10, '1.48', '2'),
-(2614, 21, '6.54', '4'),
+(2614, 21, '6.54', '4');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (2614, 65, '3.95', '1'),
 (2614, 72, '0.96', '4'),
 (2614, 92, '2.51', '4'),
@@ -45076,7 +45118,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (3043, 56, '1.63', '3'),
 (3043, 103, '3.08', '1'),
 (3043, 107, '12.05', '4'),
-(3043, 127, '4.17', '1'),
+(3043, 127, '4.17', '1');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (3044, 118, '4.42', '1'),
 (3044, 125, '0.34', '4'),
 (3044, 152, '2.83', '2'),
@@ -47203,7 +47246,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (3473, 122, '1.33', '3'),
 (3473, 125, '0.45', '4'),
 (3473, 133, '7.90', '1'),
-(3473, 154, '1.78', '1'),
+(3473, 154, '1.78', '1');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (3474, 21, '6.99', '1'),
 (3474, 28, '2.66', '2'),
 (3474, 49, '10.75', '3'),
@@ -49329,7 +49373,8 @@ INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (3910, 51, '18.28', '3'),
 (3910, 67, '2.33', '3'),
 (3910, 141, '28.29', '1'),
-(3911, 102, '2.06', '4'),
+(3911, 102, '2.06', '4');
+INSERT INTO `purch_prod` (`purid`, `productid`, `cost`, `amount`) VALUES
 (3911, 145, '0.93', '3'),
 (3912, 3, '1.30', '4'),
 (3912, 6, '1.71', '1'),
@@ -51390,12 +51435,12 @@ CREATE TABLE `pur_categ` (
 ,`date` date
 ,`time` time
 ,`storeid` int(4)
+,`catid` int(2)
 ,`cost` decimal(6,2)
 ,`amount` decimal(3,0)
 ,`prname` varchar(40)
 ,`brand` varchar(30)
 ,`name` varchar(30)
-,`catid` int(2)
 );
 
 -- --------------------------------------------------------
@@ -51493,7 +51538,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `islabel
 DROP TABLE IF EXISTS `pur_categ`;
 
 DROP VIEW IF EXISTS `pur_categ`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `pur_categ`  AS  select `purchase`.`purid` AS `purid`,`purchase`.`total` AS `total`,`purchase`.`payment_method` AS `payment_method`,`purchase`.`date` AS `date`,`purchase`.`time` AS `time`,`purchase`.`storeid` AS `storeid`,`purch_prod`.`cost` AS `cost`,`purch_prod`.`amount` AS `amount`,`product`.`name` AS `prname`,`product`.`brand` AS `brand`,`category`.`name` AS `name`,`product`.`catid` AS `catid` from (((`purchase` join `purch_prod`) join `product`) join `category`) where ((`purchase`.`purid` = `purch_prod`.`purid`) and (`purch_prod`.`productid` = `product`.`productid`) and (`product`.`catid` = `category`.`catid`)) order by `purchase`.`purid` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `pur_categ`  AS  select `purchase`.`purid` AS `purid`,`purchase`.`total` AS `total`,`purchase`.`payment_method` AS `payment_method`,`purchase`.`date` AS `date`,`purchase`.`time` AS `time`,`purchase`.`storeid` AS `storeid`,`product`.`catid` AS `catid`,`purch_prod`.`cost` AS `cost`,`purch_prod`.`amount` AS `amount`,`product`.`name` AS `prname`,`product`.`brand` AS `brand`,`category`.`name` AS `name` from (((`purchase` join `purch_prod`) join `product`) join `category`) where ((`purchase`.`purid` = `purch_prod`.`purid`) and (`purch_prod`.`productid` = `product`.`productid`) and (`product`.`catid` = `category`.`catid`)) order by `purchase`.`purid` ;
 
 -- --------------------------------------------------------
 
@@ -51520,7 +51565,16 @@ ALTER TABLE `category`
 -- Ευρετήρια για πίνακα `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`cardid`);
+  ADD PRIMARY KEY (`cardid`),
+  ADD KEY `hometown` (`city`),
+  ADD KEY `fullname` (`first_name`,`last_name`);
+
+--
+-- Ευρετήρια για πίνακα `has`
+--
+ALTER TABLE `has`
+  ADD PRIMARY KEY (`catid`,`storeid`),
+  ADD KEY `storeid` (`storeid`);
 
 --
 -- Ευρετήρια για πίνακα `offers`
@@ -51547,7 +51601,7 @@ ALTER TABLE `phone_number`
 --
 ALTER TABLE `pricehistory`
   ADD PRIMARY KEY (`storeid`,`productid`,`date`),
-  ADD KEY `productid` (`productid`);
+  ADD KEY `product` (`productid`);
 
 --
 -- Ευρετήρια για πίνακα `product`
@@ -51563,7 +51617,8 @@ ALTER TABLE `purchase`
   ADD PRIMARY KEY (`purid`),
   ADD UNIQUE KEY `uniq_trans` (`date`,`time`,`storeid`,`cardid`),
   ADD KEY `storeid` (`storeid`),
-  ADD KEY `cardid` (`cardid`);
+  ADD KEY `cardid` (`cardid`),
+  ADD KEY `total_cost_method` (`total`,`payment_method`);
 
 --
 -- Ευρετήρια για πίνακα `purch_prod`
@@ -51612,47 +51667,53 @@ ALTER TABLE `store`
 --
 
 --
+-- Περιορισμοί για πίνακα `has`
+--
+ALTER TABLE `has`
+  ADD CONSTRAINT `has_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `has_ibfk_2` FOREIGN KEY (`catid`) REFERENCES `category` (`catid`) ON DELETE CASCADE;
+
+--
 -- Περιορισμοί για πίνακα `offers`
 --
 ALTER TABLE `offers`
-  ADD CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`),
-  ADD CONSTRAINT `offers_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`);
+  ADD CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `offers_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`) ON DELETE CASCADE;
 
 --
 -- Περιορισμοί για πίνακα `opening_hours`
 --
 ALTER TABLE `opening_hours`
-  ADD CONSTRAINT `opening_hours_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`);
+  ADD CONSTRAINT `opening_hours_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`) ON DELETE CASCADE;
 
 --
 -- Περιορισμοί για πίνακα `phone_number`
 --
 ALTER TABLE `phone_number`
-  ADD CONSTRAINT `phone_number_ibfk_1` FOREIGN KEY (`cardid`) REFERENCES `customer` (`cardid`);
+  ADD CONSTRAINT `phone_number_ibfk_1` FOREIGN KEY (`cardid`) REFERENCES `customer` (`cardid`) ON DELETE CASCADE;
 
 --
 -- Περιορισμοί για πίνακα `pricehistory`
 --
 ALTER TABLE `pricehistory`
-  ADD CONSTRAINT `pricehistory_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`),
-  ADD CONSTRAINT `pricehistory_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`);
+  ADD CONSTRAINT `pricehistory_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `pricehistory_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`) ON DELETE CASCADE;
 
 --
 -- Περιορισμοί για πίνακα `purchase`
 --
 ALTER TABLE `purchase`
-  ADD CONSTRAINT `purchase_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`),
-  ADD CONSTRAINT `purchase_ibfk_2` FOREIGN KEY (`cardid`) REFERENCES `customer` (`cardid`);
+  ADD CONSTRAINT `purchase_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `store` (`storeid`) ON DELETE SET NULL,
+  ADD CONSTRAINT `purchase_ibfk_2` FOREIGN KEY (`cardid`) REFERENCES `customer` (`cardid`) ON DELETE SET NULL;
 
 --
 -- Περιορισμοί για πίνακα `purch_prod`
 --
 ALTER TABLE `purch_prod`
   ADD CONSTRAINT `purch_prod_ibfk_1` FOREIGN KEY (`purid`) REFERENCES `purchase` (`purid`),
-  ADD CONSTRAINT `purch_prod_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`);
+  ADD CONSTRAINT `purch_prod_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
