@@ -11,22 +11,21 @@ if (isset($_GET['cardid'])) {
 }
 
 // check POST for DELETION
-if(isset($_GET['delete'])){
+if (isset($_GET['delete'])) {
 
     $cardid_to_delete = mysqli_real_escape_string($conn, $_GET['cardid_to_delete']);
 
     $sqldel = "DELETE FROM customer WHERE cardid = $cardid_to_delete";
     echo $sqldel;
-    if(mysqli_query($conn, $sqldel)){
+    if (mysqli_query($conn, $sqldel)) {
         // success
-        header_remove(); 
+        header_remove();
         header("Location: customers.php");
         exit;
     } else {
         // failure
-        echo 'query error: '. mysqli_error($conn);
+        echo 'query error: ' . mysqli_error($conn);
     }
-
 }
 ob_flush();
 ?>
@@ -168,6 +167,25 @@ if (isset($_GET['seehours'])) {
     $resweek = mysqli_query($conn, $sqlweek);
     $avgweek = mysqli_fetch_all($resweek, MYSQLI_ASSOC);
 }
+
+/* All Transactions Total and per category */
+$sqlpur = 'SELECT * FROM purchase WHERE cardid=' . $cardid;
+$resultpur = mysqli_query($conn, $sqlpur);
+
+$purs = mysqli_fetch_all($resultpur, MYSQLI_ASSOC);
+
+$sqlcat = 'SELECT purchase.purid, purchase.cardid, total, payment_method, date, time, storeid, product.catid,
+           cost, amount, product.name AS prname, brand, category.name AS name
+           FROM purchase, purch_prod, product, category
+           WHERE purchase.purid = purch_prod.purid 
+           AND purch_prod.productid = product.productid
+           AND product.catid = category.catid
+           AND purchase.cardid = ' . $cardid .
+    ' ORDER BY name,purid;';
+
+$resultcat = mysqli_query($conn, $sqlcat);
+
+$purscat = mysqli_fetch_all($resultcat, MYSQLI_ASSOC);
 ?>
 <?php include 'templates/header.php'; ?>
 
@@ -342,6 +360,140 @@ if (isset($_GET['seehours'])) {
             </div>
         </div>
     </div>
+    
+
+    <div class="col-12 justify-content-center mt-3" id="purtable">
+        <style>
+            tr[data-href] {
+                cursor: pointer;
+            }
+
+            /* Style the tab */
+            .tab {
+                overflow: hidden;
+                /*border: 1px solid #ccc;
+                    background-color: #f1f1f1;*/
+            }
+
+            /* Style the buttons that are used to open the tab content */
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 8px 16px 8px 16px;
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+                transition: 0.5s;
+            }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #f7ac15;
+                color: #354856;
+            }
+
+            /* Style the tab content */
+            .tabcontent {
+                display: block;
+                padding: 6px 12px;
+                /*border: 1px solid #ccc;*/
+                border-top: none;
+            }
+        </style>
+        <div class="tab d-flex justify-content-end">
+            <button class="tablinks active" onclick="opentab(event, 'gen')">General</button>
+            <button class="tablinks" onclick="opentab(event, 'det')">Per Category</button>
+        </div>
+        <div class="tabcontent" id="gen">
+            <table class="table">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th scope="col">Total</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Payment Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($purs as $pur) { ?>
+                        <tr style="text-align: center;" data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
+                            <td><?php echo $pur['total'] ?> €</td>
+                            <td><?php echo $pur['date'] ?></td>
+                            <td><?php echo $pur['time'] ?></td>
+                            <td><?php echo $pur['payment_method'] ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tabcontent" style="display: none;" id="det">
+            <table class="table">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Cost</th>
+                        <th scope="col">Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($purscat as $purc) { ?>
+                        <tr style="text-align: center;" data-href="<?php echo 'purchase_profile.php?purid=' . $pur['purid'] ?>">
+                            <th scope="row"><?php echo $purc['prname'] ?></th>
+                            <td><?php echo $purc['brand'] ?></td>
+                            <td><?php echo $purc['amount'] ?></td>
+                            <td><?php echo $purc['cost'] * $purc['amount'] ?> €</td>
+                            <td><?php echo $purc['name'] ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function opentab(evt, tab) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tab).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const rows = document.querySelectorAll("tr[data-href]");
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    window.location.href = row.dataset.href;
+                })
+            });
+        });
+    </script>
+
     <!-- DELETE FORM -->
     <form class="d-flex container-fluid my-4 mx-auto justify-content-center">
         <form action="customer_profile.php" method="GET">
